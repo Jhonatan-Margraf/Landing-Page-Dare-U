@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DareU – Aceite o Desafio. Ganhe de Verdade.</title>
+  <meta name="description" content="DareU é a rede social de desafios pagos. Grite no ônibus, cante no sinaleiro, ganhe dinheiro de verdade. 100% digital e verificado por IA." />
+  <meta name="keywords" content="desafios engraçados, ganhar dinheiro, desafio pago, DareU, desafios online" />
+  <meta property="og:title" content="DareU – Aceite o Desafio. Ganhe de Verdade." />
+  <meta property="og:description" content="Poste um desafio maluco, alguém topa, a grana cai. Simples assim." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:      #120e24;
+      --bg2:     #1b1535;
+      --bg3:     #231c45;
+      --card:    #1e1840;
+      --orange:  #ff8c00;
+      --orange2: #ffb300;
+      --purple:  #7c4dff;
+      --purple2: #b388ff;
+      --text:    #f0ecff;
+      --muted:   #9b94c2;
+      --border:  rgba(124,77,255,.22);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+    /* noise */
+    body::before {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:998; opacity:.32;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* ── ORB PARALLAX ── */
+    .orb {
+      position:fixed; border-radius:50%; pointer-events:none;
+      filter:blur(90px); will-change:transform; z-index:0;
+    }
+    .orb-1 { width:560px; height:560px; top:-200px; left:-180px;
+      background:radial-gradient(circle,rgba(255,140,0,.13),transparent 70%); }
+    .orb-2 { width:440px; height:440px; bottom:-140px; right:-120px;
+      background:radial-gradient(circle,rgba(124,77,255,.18),transparent 70%); }
+    .orb-3 { width:300px; height:300px; top:42%; left:38%;
+      background:radial-gradient(circle,rgba(255,180,0,.07),transparent 70%); }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 6vw;
+      background:rgba(18,14,36,.88); backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo { display:flex; align-items:center; }
+    .nav-logo img { height:80px; width:auto; display:block; }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.88rem; font-weight:600; transition:color .2s; }
+    .nav-links a:hover { color:var(--text); }
+    .nav-cta {
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      color:#fff; font-weight:800; font-size:.88rem;
+      padding:10px 26px; border-radius:50px; text-decoration:none;
+      box-shadow:0 4px 20px rgba(255,140,0,.3);
+      transition:transform .2s,box-shadow .2s;
+    }
+    .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,140,0,.48); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; }
+    .mobile-nav {
+      display:none; flex-direction:column;
+      position:fixed; top:62px; left:0; right:0;
+      background:var(--bg2); border-bottom:1px solid var(--border); z-index:99; padding:12px 6vw;
+    }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav a { color:var(--text); text-decoration:none; font-weight:700; padding:14px 0; border-bottom:1px solid var(--border); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      text-align:center; padding:130px 6vw 20px; position:relative; overflow:hidden;
+    }
+    .hero-content { position:relative; z-index:2; max-width:880px; }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(124,77,255,.12); border:1px solid var(--border);
+      color:var(--purple2); font-size:.78rem; font-weight:700;
+      padding:6px 18px; border-radius:50px; margin-bottom:32px;
+      animation:fadeDown .55s ease both;
+    }
+    .hero-badge .dot { width:7px; height:7px; border-radius:50%; background:var(--orange); animation:blink 1.4s infinite; }
+    h1.hero-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(3.4rem,10vw,7.8rem);
+      line-height:.88; letter-spacing:.02em;
+      animation:fadeDown .65s .08s ease both;
+    }
+    .hero-title .hl {
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .hero-title .wob { display:inline-block; animation:wobble 2.6s ease-in-out infinite; }
+    .hero-sub {
+      color:var(--muted); font-size:clamp(1rem,2.5vw,1.18rem);
+      max-width:580px; margin:22px auto 44px; line-height:1.78;
+      animation:fadeDown .65s .16s ease both;
+    }
+    .hero-sub strong { color:var(--text); font-style:italic; }
+    .hero-btns {
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      animation:fadeDown .65s .24s ease both; margin-bottom:60px;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      color:#fff; font-weight:800; font-size:1rem;
+      padding:16px 42px; border-radius:50px; border:none; cursor:pointer;
+      text-decoration:none; box-shadow:0 8px 28px rgba(255,140,0,.4);
+      transition:transform .2s,box-shadow .2s;
+    }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(255,140,0,.56); }
+    .btn-secondary {
+      background:transparent; border:1.5px solid var(--border);
+      color:var(--text); font-weight:700; font-size:1rem;
+      padding:16px 42px; border-radius:50px; cursor:pointer; text-decoration:none;
+      transition:border-color .2s,background .2s;
+    }
+    .btn-secondary:hover { border-color:var(--purple2); background:rgba(124,77,255,.08); }
+
+    /* ── CAROUSEL ── */
+    .carousel-section { padding:0 0 90px; position:relative; z-index:2; animation:fadeUp .8s .38s ease both; }
+    .carousel-label {
+      text-align:center; margin-bottom:26px;
+      font-size:.76rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);
+    }
+    .carousel-outer { overflow:hidden; }
+    .carousel-track {
+      display:flex; gap:18px; padding:12px 6vw 16px;
+      overflow-x:auto; scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      cursor:grab; user-select:none;
+      scrollbar-width:none;
+    }
+    .carousel-track::-webkit-scrollbar { display:none; }
+    .carousel-track.grabbing { cursor:grabbing; }
+
+    .c-card {
+      flex-shrink:0; width:240px;
+      background:var(--card); border:1px solid var(--border); border-radius:22px;
+      padding:24px 22px 20px; position:relative; overflow:hidden;
+      scroll-snap-align:start;
+      transition:transform .3s,box-shadow .3s;
+    }
+    .c-card:hover { transform:translateY(-7px) scale(1.03); box-shadow:0 26px 60px rgba(0,0,0,.5); }
+    .c-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(140deg,rgba(255,140,0,.06),transparent 55%);
+      pointer-events:none;
+    }
+    .c-card.purple { border-color:rgba(124,77,255,.38); }
+    .c-card.purple::before { background:linear-gradient(140deg,rgba(124,77,255,.1),transparent 55%); }
+    .c-emoji { font-size:2.3rem; margin-bottom:14px; display:block; }
+    .c-cat { font-size:.67rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--orange); margin-bottom:7px; }
+    .c-card.purple .c-cat { color:var(--purple2); }
+    .c-title { font-size:.91rem; font-weight:800; line-height:1.45; margin-bottom:18px; }
+    .c-bottom { display:flex; align-items:center; justify-content:space-between; }
+    .c-reward { font-family:'Bebas Neue',sans-serif; font-size:1.35rem; letter-spacing:.04em; color:var(--orange); }
+    .c-card.purple .c-reward { color:var(--purple2); }
+    .c-btn {
+      font-size:.72rem; font-weight:800; padding:7px 16px; border-radius:50px;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      border:none; color:#fff; cursor:pointer; transition:transform .2s;
+    }
+    .c-card.purple .c-btn { background:linear-gradient(135deg,var(--purple),var(--purple2)); }
+    .c-btn:hover { transform:scale(1.1); }
+
+    .carousel-dots { display:flex; justify-content:center; gap:8px; margin-top:18px; }
+    .carousel-dots button {
+      width:8px; height:8px; border-radius:50%; border:none;
+      background:rgba(124,77,255,.25); cursor:pointer; padding:0; transition:.3s;
+    }
+    .carousel-dots button.active { background:var(--orange); width:26px; border-radius:4px; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding:100px 6vw; }
+    .section-label {
+      display:inline-block; font-size:.73rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:.12em; color:var(--orange); margin-bottom:14px;
+      padding:5px 14px; background:rgba(255,140,0,.1); border-radius:50px;
+      border:1px solid rgba(255,140,0,.2);
+    }
+    h2.section-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.4rem,5.5vw,4rem); line-height:.96; letter-spacing:.02em; margin-bottom:18px;
+    }
+    .section-sub { color:var(--muted); font-size:1.02rem; line-height:1.78; max-width:540px; }
+
+    /* ── PROBLEM ── */
+    .problem { background:var(--bg2); }
+    .problem-inner { max-width:1100px; margin:0 auto; }
+    .problem-header { text-align:center; margin-bottom:60px; }
+    .problem-header .section-sub { margin:0 auto; }
+    .problem-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+    .prob-card {
+      background:var(--bg3); border:1px solid var(--border); border-radius:20px;
+      padding:32px 28px; position:relative; overflow:hidden;
+      transition:transform .3s; cursor:default;
+    }
+    .prob-card:hover { transform:translateY(-5px); }
+    .prob-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg,var(--orange),var(--orange2)); opacity:0; transition:opacity .3s;
+    }
+    .prob-card:hover::after { opacity:1; }
+    .prob-icon { font-size:2.2rem; margin-bottom:16px; display:block; }
+    .prob-card h3 { font-size:1.06rem; font-weight:800; margin-bottom:10px; }
+    .prob-card p { color:var(--muted); font-size:.91rem; line-height:1.72; }
+
+    /* ── SOLUTION ── */
+    .solution { background:var(--bg); }
+    .solution-inner {
+      max-width:1100px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+    }
+    .solution-visual { position:relative; display:flex; justify-content:center; align-items:center; }
+    .sol-glow {
+      position:absolute; width:380px; height:380px; border-radius:50%;
+      background:radial-gradient(circle,rgba(124,77,255,.18),transparent 70%);
+      pointer-events:none;
+    }
+    .sol-phone {
+      width:285px; background:var(--card); border:1px solid var(--border);
+      border-radius:40px; overflow:hidden;
+      box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 60px rgba(124,77,255,.1);
+      position:relative; z-index:2;
+    }
+    .sol-phone-header {
+      background:var(--bg3); padding:16px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .sol-phone-logo { font-family:'Bebas Neue',sans-serif; font-size:1.1rem;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .sol-feed { padding:13px; display:flex; flex-direction:column; gap:10px; }
+    .sol-item {
+      background:var(--bg3); border-radius:13px; padding:13px; border:1px solid var(--border);
+    }
+    .sol-item-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:5px; }
+    .sol-item-name { font-size:.75rem; font-weight:700; color:var(--purple2); }
+    .sol-item-badge { font-size:.65rem; font-weight:700; padding:2px 8px; border-radius:50px;
+      background:rgba(255,140,0,.15); color:var(--orange2); }
+    .sol-item-text { font-size:.79rem; color:var(--text); margin-bottom:9px; line-height:1.42; }
+    .sol-item-reward { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--orange); }
+    .sol-item-btn {
+      width:100%; margin-top:8px; padding:7px;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      border:none; border-radius:50px; color:#fff; font-size:.75rem; font-weight:800; cursor:pointer;
+    }
+    .solution-list { margin-top:30px; display:flex; flex-direction:column; gap:18px; }
+    .sol-feat { display:flex; gap:14px; align-items:flex-start; }
+    .sol-feat-icon {
+      width:42px; height:42px; border-radius:12px; flex-shrink:0;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    }
+    .sol-feat-body h4 { font-size:.92rem; font-weight:800; margin-bottom:3px; }
+    .sol-feat-body p { color:var(--muted); font-size:.86rem; line-height:1.6; }
+
+    /* ── HOW ── */
+    .how { background:var(--bg2); }
+    .how-inner { max-width:1100px; margin:0 auto; }
+    .how-header { text-align:center; margin-bottom:68px; }
+    .how-header .section-sub { margin:0 auto; }
+    .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0; position:relative; }
+    .steps::before {
+      content:''; position:absolute; top:44px; left:10%; right:10%; height:2px;
+      background:linear-gradient(90deg,var(--orange),var(--purple)); z-index:0;
+    }
+    .step { text-align:center; padding:0 20px; position:relative; z-index:1; }
+    .step-num {
+      width:88px; height:88px; border-radius:50%; margin:0 auto 26px;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#fff;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      box-shadow:0 0 36px rgba(255,140,0,.35);
+      transition:transform .3s,box-shadow .3s;
+    }
+    .step:hover .step-num { transform:scale(1.1) rotate(-4deg); box-shadow:0 0 56px rgba(255,140,0,.55); }
+    .step-num.purple { background:linear-gradient(135deg,var(--purple),var(--purple2)); box-shadow:0 0 36px rgba(124,77,255,.35); }
+    .step:hover .step-num.purple { transform:scale(1.1) rotate(4deg); box-shadow:0 0 56px rgba(124,77,255,.55); }
+    .step h3 { font-size:1rem; font-weight:800; margin-bottom:8px; }
+    .step p { color:var(--muted); font-size:.87rem; line-height:1.65; }
+    .ai-shield {
+      margin-top:66px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:22px; padding:42px; display:flex; gap:42px; align-items:center; flex-wrap:wrap;
+    }
+    .ai-shield-icon { font-size:3.6rem; flex-shrink:0; }
+    .ai-shield h3 { font-size:1.22rem; font-weight:800; margin-bottom:8px; }
+    .ai-shield p { color:var(--muted); font-size:.92rem; line-height:1.72; max-width:580px; }
+    .ai-tags { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+    .ai-tag {
+      font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:50px;
+      background:rgba(124,77,255,.1); border:1px solid rgba(124,77,255,.28); color:var(--purple2);
+    }
+
+    /* ── CTA ── */
+    .cta-section { background:var(--bg); text-align:center; position:relative; overflow:hidden; }
+    .cta-section::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 50% 0%,rgba(255,140,0,.1) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .cta-inner { max-width:700px; margin:0 auto; position:relative; z-index:2; }
+    h2.cta-title {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(2.8rem,7.5vw,5.8rem); line-height:.9; letter-spacing:.02em; margin-bottom:22px;
+    }
+    .cta-title .hl { background:linear-gradient(135deg,var(--orange),var(--orange2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .cta-sub { color:var(--muted); font-size:1.06rem; line-height:1.76; margin-bottom:42px; }
+    .cta-form { display:flex; gap:12px; max-width:480px; margin:0 auto; flex-wrap:wrap; justify-content:center; }
+    .cta-input {
+      flex:1; min-width:210px;
+      background:var(--card); border:1.5px solid var(--border); color:var(--text);
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:.94rem;
+      padding:15px 22px; border-radius:50px; outline:none; transition:border-color .2s;
+    }
+    .cta-input::placeholder { color:var(--muted); }
+    .cta-input:focus { border-color:var(--orange); }
+    .cta-trust { color:var(--muted); font-size:.8rem; margin-top:16px; }
+    .cta-trust span { color:var(--purple2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--bg2); border-top:1px solid var(--border);
+      padding:42px 6vw; display:flex; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; gap:18px;
+    }
+    .footer-logo img { height:75px; width:auto; display:block; }
+    footer p { color:var(--muted); font-size:.82rem; }
+    .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+    .footer-links a { color:var(--muted); text-decoration:none; font-size:.82rem; transition:color .2s; }
+    .footer-links a:hover { color:var(--text); }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-22px)} to{opacity:1;transform:none} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)}  to{opacity:1;transform:none} }
+    @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes wobble   { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px) {
+      .solution-inner { grid-template-columns:1fr; }
+      .solution-visual { order:-1; }
+      .steps::before { display:none; }
+      .steps { gap:40px; }
+    }
+    @media(max-width:640px) {
+      .nav-links,.nav-cta { display:none; }
+      .hamburger { display:flex; }
+      .ai-shield { flex-direction:column; gap:18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Parallax orbs -->
+<div class="orb orb-1" id="orb1"></div>
+<div class="orb orb-2" id="orb2"></div>
+<div class="orb orb-3" id="orb3"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo"><img src="imagens/logo-sem-fundo.png" alt="DareU"></span>
+  <ul class="nav-links">
+    <li><a href="#problema">Por que isso?</a></li>
+    <li><a href="#solucao">A plataforma</a></li>
+    <li><a href="#como">Como funciona</a></li>
+  </ul>
+  <a href="#entrar" class="nav-cta">Quero topar 🔥</a>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#problema" onclick="toggleMenu()">Por que isso?</a>
+  <a href="#solucao" onclick="toggleMenu()">A plataforma</a>
+  <a href="#como" onclick="toggleMenu()">Como funciona</a>
+  <a href="#entrar" onclick="toggleMenu()">Quero topar 🔥</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Desafios novos todo dia · Seja o próximo</div>
+    <h1 class="hero-title">
+      Desafios <span class="wob">malucos</span><br>
+      <span class="hl">dinheiro real</span>
+    </h1>
+    <p class="hero-sub">
+      Alguém paga pra você gritar no ônibus, cantar no sinaleiro<br>
+      ou pedir pizza fazendo voz de robô.<br>
+      <strong>Você topa?</strong>
+    </p>
+    <div class="hero-btns">
+      <a href="#entrar" class="btn-primary">Aceitar desafio 🤙</a>
+      <a href="#como" class="btn-secondary">Como funciona</a>
+    </div>
+  </div>
+</section>
+
+<!-- CARROSSEL -->
+<div class="carousel-section">
+  <div class="carousel-label">🔥 Desafios abertos agora mesmo</div>
+  <div class="carousel-outer">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="c-card">
+        <span class="c-emoji">🚌</span>
+        <div class="c-cat">Desafio social</div>
+        <div class="c-title">Grite "EU AMO SEGUNDA-FEIRA!" no ônibus lotado</div>
+        <div class="c-bottom"><div class="c-reward">R$ 60</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card purple">
+        <span class="c-emoji">🎵</span>
+        <div class="c-cat">Desafio musical</div>
+        <div class="c-title">Cante o hino nacional no sinaleiro em voz de ópera</div>
+        <div class="c-bottom"><div class="c-reward">R$ 90</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card">
+        <span class="c-emoji">🍕</span>
+        <div class="c-cat">Desafio criativo</div>
+        <div class="c-title">Peça uma pizza pelo telefone fazendo voz de robô até o final</div>
+        <div class="c-bottom"><div class="c-reward">R$ 45</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card purple">
+        <span class="c-emoji">🛒</span>
+        <div class="c-cat">Desafio público</div>
+        <div class="c-title">Ande de costas por 2 corredores inteiros do supermercado</div>
+        <div class="c-bottom"><div class="c-reward">R$ 70</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card">
+        <span class="c-emoji">☎️</span>
+        <div class="c-cat">Desafio áudio</div>
+        <div class="c-title">Ligue pro seu chefe falando só em rimas durante 1 minuto</div>
+        <div class="c-bottom"><div class="c-reward">R$ 120</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card purple">
+        <span class="c-emoji">🧃</span>
+        <div class="c-cat">Desafio físico</div>
+        <div class="c-title">Beba um copo cheio de limão sem fazer nenhuma careta</div>
+        <div class="c-bottom"><div class="c-reward">R$ 55</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card">
+        <span class="c-emoji">💃</span>
+        <div class="c-cat">Desafio dança</div>
+        <div class="c-title">Dance no elevador e cumprimente quem entrar como se nada</div>
+        <div class="c-bottom"><div class="c-reward">R$ 80</div><button class="c-btn">Topar!</button></div>
+      </div>
+      <div class="c-card purple">
+        <span class="c-emoji">🎤</span>
+        <div class="c-cat">Desafio coragem</div>
+        <div class="c-title">Peça um autógrafo pra um estranho como se ele fosse famoso</div>
+        <div class="c-bottom"><div class="c-reward">R$ 40</div><button class="c-btn">Topar!</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</div>
+
+<!-- PROBLEMA -->
+<section class="problem" id="problema">
+  <div class="problem-inner">
+    <div class="problem-header reveal">
+      <div class="section-label">O problema</div>
+      <br>
+      <h2 class="section-title">Diversão e grana<br>nunca conversaram</h2>
+      <p class="section-sub">Você já fez coisa ridícula de graça por causa de uma aposta. E se você tivesse cobrado? O DareU existe pra isso.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="prob-card reveal">
+        <span class="prob-icon">🤷</span>
+        <h3>Apostas sem recompensa real</h3>
+        <p>Você já perdeu (ou ganhou) uma aposta idiota de bar que não valeu nada. Aqui vale dinheiro de verdade, depositado antes de você começar.</p>
+      </div>
+      <div class="prob-card reveal" style="transition-delay:.1s">
+        <span class="prob-icon">🔒</span>
+        <h3>Sem garantia de pagamento</h3>
+        <p>Você cumpre o desafio, grava tudo — e depois o cara some. O escrow do DareU bloqueia o valor antes mesmo de você aceitar.</p>
+      </div>
+      <div class="prob-card reveal" style="transition-delay:.2s">
+        <span class="prob-icon">🚫</span>
+        <h3>Desafios perigosos por aí</h3>
+        <p>A internet é cheia de trends que machucam. Nossa IA barra na entrada qualquer desafio ilegal, perigoso ou fora do limite.</p>
+      </div>
+      <div class="prob-card reveal" style="transition-delay:.3s">
+        <span class="prob-icon">🤖</span>
+        <h3>Vídeos falsos são problema real</h3>
+        <p>Com IA gerando vídeos realistas, qualquer um pode forjar uma prova. Nossa detecção de deepfake garante que só vale o que é genuíno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section class="solution" id="solucao">
+  <div class="solution-inner">
+    <div class="solution-text reveal">
+      <div class="section-label">A plataforma</div>
+      <h2 class="section-title">Sua rede social<br>de desafios pagos</h2>
+      <p class="section-sub">DareU funciona como um feed social — mas cada post tem um prêmio. Você posta, alguém topa, grava a prova, recebe. Fim.</p>
+      <div class="solution-list">
+        <div class="sol-feat">
+          <div class="sol-feat-icon">💸</div>
+          <div class="sol-feat-body">
+            <h4>Grana bloqueada antes de começar</h4>
+            <p>O valor vai pro escrow no momento do post. Sem calote, sem drama — o dinheiro já tá esperando por você.</p>
+          </div>
+        </div>
+        <div class="sol-feat">
+          <div class="sol-feat-icon">🧠</div>
+          <div class="sol-feat-body">
+            <h4>IA filtra o que é perigoso</h4>
+            <p>Cada desafio é analisado antes de ir ao ar. Conteúdo ilegal, +18 ou arriscado é bloqueado na hora, automaticamente.</p>
+          </div>
+        </div>
+        <div class="sol-feat">
+          <div class="sol-feat-icon">👁️</div>
+          <div class="sol-feat-body">
+            <h4>Detector de deepfake no envio</h4>
+            <p>A IA visual analisa cada vídeo submetido e barra provas geradas artificialmente. Só conta o que é real.</p>
+          </div>
+        </div>
+        <div class="sol-feat">
+          <div class="sol-feat-icon">📲</div>
+          <div class="sol-feat-body">
+            <h4>Feed, curtida e ranking</h4>
+            <p>Siga pessoas, curta os desafios mais épicos e suba no ranking dos mais corajosos da plataforma.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="solution-visual reveal" style="transition-delay:.2s">
+      <div class="sol-glow"></div>
+      <div class="sol-phone">
+        <div class="sol-phone-header">
+          <span class="sol-phone-logo">DareU</span>
+          <span style="color:var(--muted);font-size:.72rem">🔔 5</span>
+        </div>
+        <div class="sol-feed">
+          <div class="sol-item">
+            <div class="sol-item-top">
+              <span class="sol-item-name">@pedrao_br</span>
+              <span class="sol-item-badge">Aberto</span>
+            </div>
+            <div class="sol-item-text">🚌 Grite "eu amo segunda!" no ônibus cheio</div>
+            <div class="sol-item-reward">R$ 60,00</div>
+            <button class="sol-item-btn">Topar Desafio!</button>
+          </div>
+          <div class="sol-item" style="border-color:rgba(124,77,255,.32)">
+            <div class="sol-item-top">
+              <span class="sol-item-name">@mc_carol99</span>
+              <span class="sol-item-badge" style="background:rgba(124,77,255,.15);color:var(--purple2)">Novo</span>
+            </div>
+            <div class="sol-item-text">🎵 Cante no sinaleiro em voz de ópera</div>
+            <div class="sol-item-reward">R$ 90,00</div>
+            <button class="sol-item-btn" style="background:linear-gradient(135deg,var(--purple),var(--purple2))">Topar Desafio!</button>
+          </div>
+          <div class="sol-item">
+            <div class="sol-item-top">
+              <span class="sol-item-name">@zé_maluco</span>
+              <span class="sol-item-badge">Aberto</span>
+            </div>
+            <div class="sol-item-text">🛒 Ande de costas no supermercado inteiro</div>
+            <div class="sol-item-reward">R$ 70,00</div>
+            <button class="sol-item-btn">Topar Desafio!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="how" id="como">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <div class="section-label">Passo a passo</div>
+      <br>
+      <h2 class="section-title">Do desafio à grana<br>em 4 passos</h2>
+      <p class="section-sub">Sem burocracia, sem contrato, sem enrolação. Só coragem e uma câmera boa.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>Crie sua conta</h3>
+        <p>Cadastro gratuito em segundos. Já cai direto no feed de desafios.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-num purple">02</div>
+        <h3>Poste ou aceite</h3>
+        <p>Crie um desafio maluco com o prêmio que quiser, ou tope um que apareceu no seu feed.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.2s">
+        <div class="step-num">03</div>
+        <h3>Grave e envie a prova</h3>
+        <p>Fez o desafio? Grava o vídeo, envia. A IA verifica se é autêntico em segundos.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.3s">
+        <div class="step-num purple">04</div>
+        <h3>Receba o prêmio 💰</h3>
+        <p>O criador aprova, o escrow libera e o dinheiro cai na sua conta. Ponto final.</p>
+      </div>
+    </div>
+
+    <div class="ai-shield reveal">
+      <div class="ai-shield-icon">🛡️</div>
+      <div>
+        <h3>A diversão tem limites — e a IA garante</h3>
+        <p>Dois sistemas de IA trabalham em paralelo: um analisa o texto do desafio para barrar conteúdo perigoso, ilegal ou +18 antes de publicar; o outro verifica cada vídeo enviado para detectar deepfakes e provas falsas. Você foca no desafio, a gente cuida do resto.</p>
+        <div class="ai-tags">
+          <span class="ai-tag">🤖 IA de texto</span>
+          <span class="ai-tag">👁️ IA visual</span>
+          <span class="ai-tag">🚫 Anti-deepfake</span>
+          <span class="ai-tag">⚠️ Filtro +18</span>
+          <span class="ai-tag">🔒 Anti-ilegal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="entrar">
+  <div class="cta-inner reveal">
+    <div class="section-label">Acesso antecipado</div>
+    <br>
+    <h2 class="cta-title">
+      Você <span class="hl">topa</span><br>
+      o desafio?
+    </h2>
+    <p class="cta-sub">Entre na lista de espera e seja um dos primeiros a usar o DareU. Os early adopters ganham benefícios exclusivos no lançamento.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="seu@email.com" />
+      <a href="#" class="btn-primary" style="white-space:nowrap">Eu topo! 🤙</a>
+    </div>
+    <p class="cta-trust">✅ Grátis para entrar. <span>Zero spam, sai quando quiser.</span></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo"><img src="imagens/logo-sem-fundo.png" alt="DareU"></span>
+  <p>© 2026 DareU. Todos os direitos reservados.</p>
+  <div class="footer-links">
+    <a href="#">Termos de uso</a>
+    <a href="#">Privacidade</a>
+    <a href="https://wa.me/5545998101887" target="_blank" rel="noopener noreferrer">Contato</a>
+  </div>
+</footer>
+
+<script>
+/* ══ PARALLAX ORBS ══ */
+const orb1 = document.getElementById('orb1');
+const orb2 = document.getElementById('orb2');
+const orb3 = document.getElementById('orb3');
+
+// Per-orb current offsets (persisted across both effects)
+const pos = { o1:{x:0,y:0}, o2:{x:0,y:0}, o3:{x:0,y:0} };
+
+function applyOrbs() {
+  orb1.style.transform = `translate(${pos.o1.x}px, ${pos.o1.y}px)`;
+  orb2.style.transform = `translate(${pos.o2.x}px, ${pos.o2.y}px)`;
+  orb3.style.transform = `translate(${pos.o3.x}px, ${pos.o3.y}px)`;
+}
+
+// Mouse parallax — runs on mousemove, updates x & y
+document.addEventListener('mousemove', (e) => {
+  const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
+  pos.o1.x = dx * 30;  pos.o1.y = dy * 24;
+  pos.o2.x = dx * -24; pos.o2.y = dy * -20;
+  pos.o3.x = dx * 16;  pos.o3.y = dy * 16;
+  applyOrbs();
+});
+
+// Scroll parallax — accumulates y offset relative to scroll distance
+let lastSY = 0;
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const d  = sy - lastSY;
+  lastSY   = sy;
+  pos.o1.y += d * 0.18;
+  pos.o2.y -= d * 0.14;
+  pos.o3.y += d * 0.08;
+  applyOrbs();
+}, { passive: true });
+
+/* ══ SCROLL REVEAL ══ */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ══ MOBILE NAV ══ */
+function toggleMenu() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+/* ══ CAROUSEL ══ */
+(function () {
+  const track = document.getElementById('carouselTrack');
+  const dotsEl = document.getElementById('carouselDots');
+  const CARD_W = 240 + 18; // card + gap
+  let isDragging = false, startX = 0, scrollStart = 0, currentDot = 0;
+
+  // How many cards visible at once
+  function visibleCount() {
+    return Math.max(1, Math.floor((window.innerWidth * 0.88) / CARD_W));
+  }
+
+  const totalCards = track.querySelectorAll('.c-card').length;
+
+  function buildDots() {
+    dotsEl.innerHTML = '';
+    const vc    = visibleCount();
+    const count = Math.ceil(totalCards / vc);
+    for (let i = 0; i < count; i++) {
+      const btn = document.createElement('button');
+      if (i === currentDot) btn.classList.add('active');
+      btn.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(btn);
+    }
+  }
+
+  function goTo(i) {
+    const vc     = visibleCount();
+    const count  = Math.ceil(totalCards / vc);
+    currentDot   = Math.max(0, Math.min(i, count - 1));
+    track.scrollTo({ left: currentDot * vc * CARD_W, behavior: 'smooth' });
+    dotsEl.querySelectorAll('button').forEach((b, idx) => b.classList.toggle('active', idx === currentDot));
+  }
+
+  buildDots();
+  window.addEventListener('resize', buildDots);
+
+  // Update active dot on natural scroll
+  track.addEventListener('scroll', () => {
+    const vc    = visibleCount();
+    const count = Math.ceil(totalCards / vc);
+    const idx   = Math.round(track.scrollLeft / (vc * CARD_W));
+    if (idx !== currentDot && idx < count) {
+      currentDot = idx;
+      dotsEl.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === idx));
+    }
+  }, { passive: true });
+
+  // Mouse drag
+  track.addEventListener('mousedown', (e) => {
+    isDragging = true; startX = e.clientX; scrollStart = track.scrollLeft;
+    track.classList.add('grabbing');
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; track.classList.remove('grabbing'); });
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    track.scrollLeft = scrollStart - (e.clientX - startX);
+  });
+
+  // Touch swipe
+  track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; scrollStart = track.scrollLeft; }, { passive: true });
+  track.addEventListener('touchmove',  (e) => { track.scrollLeft = scrollStart - (e.touches[0].clientX - startX); }, { passive: true });
+
+  // Auto-advance every 3.5 s, pauses on hover
+  let timer = setInterval(() => goTo((currentDot + 1) % Math.ceil(totalCards / visibleCount())), 3500);
+  track.addEventListener('mouseenter', () => clearInterval(timer));
+  track.addEventListener('mouseleave', () => {
+    timer = setInterval(() => goTo((currentDot + 1) % Math.ceil(totalCards / visibleCount())), 3500);
+  });
+})();
+</script>
+</body>
+</html>
