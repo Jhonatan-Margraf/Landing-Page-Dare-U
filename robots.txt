@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Link para o sitemap que acabamos de criar
+Sitemap: https://dareu.vercel.app/sitemap.xml

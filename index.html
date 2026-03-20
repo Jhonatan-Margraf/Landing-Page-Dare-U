@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DareU – Aceite o Desafio. Ganhe de Verdade.</title>
-  <meta name="description" content="DareU é a rede social de desafios pagos. Grite no ônibus, cante no sinaleiro, ganhe dinheiro de verdade. 100% digital e verificado por IA." />
+  <meta name="description" content="DareU é a plataforma social de desafios com recompensa. Crie, participe e conclua etapas com análise automática." />
   <meta name="keywords" content="desafios engraçados, ganhar dinheiro, desafio pago, DareU, desafios online" />
   <meta property="og:title" content="DareU – Aceite o Desafio. Ganhe de Verdade." />
-  <meta property="og:description" content="Poste um desafio maluco, alguém topa, a grana cai. Simples assim." />
+  <meta property="og:description" content="Publique um desafio, receba participantes e conclua com recompensa validada." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="shortcut icon" href="imagens/logo-icon-sem-fundo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -49,54 +50,131 @@
       background:radial-gradient(circle,rgba(255,180,0,.07),transparent 70%); }
 
     /* ── NAV ── */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:100;
+    .site-header {
+      position:fixed; top:0; left:0; right:0; z-index:120;
+      display:flex; justify-content:center;
+      padding:16px 14px 0;
+      transition:padding .35s ease;
+    }
+    .site-nav {
+      width:100%; max-width:1120px;
       display:flex; align-items:center; justify-content:space-between;
-      padding:16px 6vw;
-      background:rgba(18,14,36,.88); backdrop-filter:blur(18px);
-      border-bottom:1px solid var(--border);
+      gap:14px; padding:12px 14px;
+      border-radius:22px;
+      background:rgba(18,14,36,.52);
+      border:1px solid rgba(255,255,255,.09);
+      backdrop-filter:blur(16px);
+      box-shadow:0 14px 36px rgba(0,0,0,.26);
+      transition:padding .35s ease,background .35s ease,box-shadow .35s ease;
     }
-    .nav-logo { display:flex; align-items:center; }
-    .nav-logo img { height:80px; width:auto; display:block; }
-    .nav-links { display:flex; gap:32px; list-style:none; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:.88rem; font-weight:600; transition:color .2s; }
-    .nav-links a:hover { color:var(--text); }
-    .nav-cta {
-      background:linear-gradient(135deg,var(--orange),var(--orange2));
-      color:#fff; font-weight:800; font-size:.88rem;
-      padding:10px 26px; border-radius:50px; text-decoration:none;
-      box-shadow:0 4px 20px rgba(255,140,0,.3);
-      transition:transform .2s,box-shadow .2s;
+    .site-header.scrolled { padding-top:10px; }
+    .site-header.scrolled .site-nav {
+      padding:9px 12px;
+      background:rgba(18,14,36,.8);
+      box-shadow:0 16px 40px rgba(0,0,0,.34);
     }
-    .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,140,0,.48); }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
-    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; }
+    .nav-logo { display:flex; align-items:center; flex-shrink:0; }
+    .nav-logo img { height:44px; width:auto; display:block; }
+    .nav-desktop { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .glass-nav {
+      display:flex; align-items:center;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      backdrop-filter:blur(12px);
+      padding:5px;
+    }
+    .nav-main-links { gap:2px; }
+    .nav-link {
+      text-decoration:none;
+      color:rgba(240,236,255,.72);
+      font-size:.84rem; font-weight:700;
+      padding:8px 14px; border-radius:999px;
+      transition:background .2s,color .2s;
+      white-space:nowrap;
+    }
+    .nav-link:hover {
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+    }
+    .hamburger {
+      display:none;
+      width:42px; height:42px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      padding:10px 9px;
+      margin-left:auto;
+      cursor:pointer;
+    }
+    .hamburger span {
+      display:block; width:100%; height:2px;
+      background:rgba(240,236,255,.88); border-radius:2px;
+      transition:transform .28s ease,opacity .2s ease;
+    }
+    .hamburger span + span { margin-top:5px; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
     .mobile-nav {
-      display:none; flex-direction:column;
-      position:fixed; top:62px; left:0; right:0;
-      background:var(--bg2); border-bottom:1px solid var(--border); z-index:99; padding:12px 6vw;
+      display:none;
+      position:fixed; inset:0; top:84px; z-index:110;
+      background:rgba(18,14,36,.95);
+      backdrop-filter:blur(14px);
+      padding:22px 22px 34px;
     }
-    .mobile-nav.open { display:flex; }
-    .mobile-nav a { color:var(--text); text-decoration:none; font-weight:700; padding:14px 0; border-bottom:1px solid var(--border); }
+    .mobile-nav.open { display:block; animation:navFade .24s ease; }
+    .mobile-nav-inner { display:flex; flex-direction:column; gap:8px; max-width:520px; margin:0 auto; }
+    .mobile-nav-link {
+      text-decoration:none;
+      color:rgba(240,236,255,.8);
+      font-size:1.06rem; font-weight:700;
+      border-radius:14px;
+      padding:14px 16px;
+      border:1px solid transparent;
+      transition:background .2s,border-color .2s,color .2s;
+    }
+    .mobile-nav-link:hover {
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.08);
+    }
+    body.menu-open { overflow:hidden; }
 
     /* ── HERO ── */
     .hero {
-      min-height:100vh; display:flex; align-items:center; justify-content:center;
-      text-align:center; padding:130px 6vw 20px; position:relative; overflow:hidden;
+      min-height:100vh; display:flex; align-items:center;
+      padding:130px 6vw 72px; position:relative; overflow:hidden;
+      background:linear-gradient(155deg,var(--bg) 0%,var(--bg2) 55%,var(--bg3) 100%);
     }
-    .hero-content { position:relative; z-index:2; max-width:880px; }
+    .hero-content { position:relative; z-index:2; max-width:1140px; width:100%; margin:0 auto; }
+    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:104px; align-items:center; }
+    .hero-copy { max-width:540px; }
+    .hero-brand {
+      display:inline-block; margin-bottom:14px;
+      font-family:'Bebas Neue',sans-serif; letter-spacing:.04em;
+      font-size:clamp(2rem,3.5vw,2.8rem); color:var(--text);
+      animation:fadeDown .55s ease both;
+    }
+    .hero-brand-logo { height:70px; width:auto; display:block; }
+    .hero-brand .brand-u {
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
     .hero-badge {
       display:inline-flex; align-items:center; gap:8px;
       background:rgba(124,77,255,.12); border:1px solid var(--border);
       color:var(--purple2); font-size:.78rem; font-weight:700;
-      padding:6px 18px; border-radius:50px; margin-bottom:32px;
+      padding:6px 18px; border-radius:50px; margin-bottom:22px;
       animation:fadeDown .55s ease both;
     }
     .hero-badge .dot { width:7px; height:7px; border-radius:50%; background:var(--orange); animation:blink 1.4s infinite; }
     h1.hero-title {
       font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(3.4rem,10vw,7.8rem);
-      line-height:.88; letter-spacing:.02em;
+      font-size:clamp(2.9rem,5.4vw,5.2rem);
+      line-height:.94; letter-spacing:.02em;
       animation:fadeDown .65s .08s ease both;
     }
     .hero-title .hl {
@@ -106,13 +184,13 @@
     .hero-title .wob { display:inline-block; animation:wobble 2.6s ease-in-out infinite; }
     .hero-sub {
       color:var(--muted); font-size:clamp(1rem,2.5vw,1.18rem);
-      max-width:580px; margin:22px auto 44px; line-height:1.78;
+      max-width:520px; margin:20px 0 36px; line-height:1.72;
       animation:fadeDown .65s .16s ease both;
     }
     .hero-sub strong { color:var(--text); font-style:italic; }
     .hero-btns {
-      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
-      animation:fadeDown .65s .24s ease both; margin-bottom:60px;
+      display:flex; gap:14px; justify-content:flex-start; flex-wrap:wrap;
+      animation:fadeDown .65s .24s ease both;
     }
     .btn-primary {
       background:linear-gradient(135deg,var(--orange),var(--orange2));
@@ -130,16 +208,94 @@
     }
     .btn-secondary:hover { border-color:var(--purple2); background:rgba(124,77,255,.08); }
 
-    /* ── CAROUSEL ── */
-    .carousel-section { padding:0 0 90px; position:relative; z-index:2; animation:fadeUp .8s .38s ease both; }
-    .carousel-label {
-      text-align:center; margin-bottom:26px;
-      font-size:.76rem; font-weight:800; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);
+    .hero-visual { position:relative; display:flex; justify-content:center; animation:fadeDown .65s .3s ease both; }
+    .hero-visual .sol-phone,
+    .solution-visual .sol-phone { width:300px; max-height:590px; }
+    .hero-chip {
+      position:absolute; z-index:3;
+      font-size:.8rem; font-weight:700; color:#fff;
+      padding:8px 14px; border-radius:999px;
+      background:rgba(35,28,69,.78); border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(8px);
+      box-shadow:0 10px 28px rgba(0,0,0,.36);
+      animation:fadeDown .6s ease both, floatChip 4.8s ease-in-out infinite;
+      white-space:nowrap;
     }
-    .carousel-outer { overflow:hidden; }
+    .chip-1 { top:10%; left:-10%; animation-delay:.2s, 0s; }
+    .chip-2 { top:4%; right:-8%; animation-delay:.35s, .6s; }
+    .chip-3 { top:46%; right:-14%; animation-delay:.5s, .9s; }
+    .chip-4 { bottom:20%; left:-14%; animation-delay:.65s, .3s; }
+    .chip-5 { bottom:8%; right:-10%; animation-delay:.45s, 1.2s; }
+
+    /* ── CAROUSEL ── */
+    .carousel-section {
+      min-height:68vh;
+      padding:62px 0 52px;
+      position:relative;
+      z-index:2;
+      overflow:hidden;
+      isolation:isolate;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      animation:fadeUp .8s .38s ease both;
+    }
+    .carousel-section::before,
+    .carousel-section::after { content:none; }
+    .carousel-label {
+      position:absolute;
+      top:46px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:3;
+      width:fit-content;
+      max-width:calc(100% - 24px);
+      margin:0;
+      text-align:center;
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.13em;
+      color:rgba(240,236,255,.9);
+      padding:10px 18px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(135deg,rgba(124,77,255,.22),rgba(255,140,0,.18));
+      box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2);
+    }
+    .carousel-outer {
+      position:relative;
+      width:100%;
+      max-width:none;
+      margin:0;
+      border-radius:0;
+      overflow:hidden;
+      border:none;
+      background:linear-gradient(160deg,rgba(30,24,64,.92),rgba(22,17,46,.9));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    .carousel-outer::before {
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);
+      pointer-events:none;
+    }
+    .carousel-outer::after {
+      content:'';
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(to right,rgba(18,14,36,.96) 0%,rgba(18,14,36,0) 10%,rgba(18,14,36,0) 90%,rgba(18,14,36,.96) 100%);
+    }
     .carousel-track {
-      display:flex; gap:18px; padding:12px 6vw 16px;
-      overflow-x:auto; scroll-snap-type:x mandatory;
+      display:flex; gap:18px; padding:24px 6vw;
+      overflow-x:auto; scroll-snap-type:none;
       -webkit-overflow-scrolling:touch;
       cursor:grab; user-select:none;
       scrollbar-width:none;
@@ -148,34 +304,56 @@
     .carousel-track.grabbing { cursor:grabbing; }
 
     .c-card {
-      flex-shrink:0; width:240px;
-      background:var(--card); border:1px solid var(--border); border-radius:22px;
-      padding:24px 22px 20px; position:relative; overflow:hidden;
-      scroll-snap-align:start;
-      transition:transform .3s,box-shadow .3s;
+      flex-shrink:0; width:300px;
+      background:transparent; border:1px solid rgba(255,255,255,.14); border-radius:20px;
+      padding:16px; position:relative; overflow:hidden;
+      scroll-snap-align:none;
+      transition:transform .25s,border-color .25s,background .25s,box-shadow .25s;
     }
-    .c-card:hover { transform:translateY(-7px) scale(1.03); box-shadow:0 26px 60px rgba(0,0,0,.5); }
+    .c-card:hover {
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.03);
+      box-shadow:0 18px 44px rgba(0,0,0,.34);
+    }
     .c-card::before {
       content:''; position:absolute; inset:0;
-      background:linear-gradient(140deg,rgba(255,140,0,.06),transparent 55%);
+      background:linear-gradient(140deg,rgba(255,140,0,.04),transparent 58%);
       pointer-events:none;
     }
-    .c-card.purple { border-color:rgba(124,77,255,.38); }
-    .c-card.purple::before { background:linear-gradient(140deg,rgba(124,77,255,.1),transparent 55%); }
-    .c-emoji { font-size:2.3rem; margin-bottom:14px; display:block; }
-    .c-cat { font-size:.67rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--orange); margin-bottom:7px; }
-    .c-card.purple .c-cat { color:var(--purple2); }
-    .c-title { font-size:.91rem; font-weight:800; line-height:1.45; margin-bottom:18px; }
-    .c-bottom { display:flex; align-items:center; justify-content:space-between; }
-    .c-reward { font-family:'Bebas Neue',sans-serif; font-size:1.35rem; letter-spacing:.04em; color:var(--orange); }
-    .c-card.purple .c-reward { color:var(--purple2); }
-    .c-btn {
-      font-size:.72rem; font-weight:800; padding:7px 16px; border-radius:50px;
-      background:linear-gradient(135deg,var(--orange),var(--orange2));
-      border:none; color:#fff; cursor:pointer; transition:transform .2s;
+    .c-card-header { display:flex; align-items:center; gap:9px; margin-bottom:10px; position:relative; z-index:2; }
+    .c-avatar {
+      width:34px; height:34px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.68rem; font-weight:800; color:#fff;
     }
-    .c-card.purple .c-btn { background:linear-gradient(135deg,var(--purple),var(--purple2)); }
-    .c-btn:hover { transform:scale(1.1); }
+    .c-user { flex:1; display:flex; flex-direction:column; gap:1px; min-width:0; }
+    .c-username { font-size:.78rem; font-weight:800; color:var(--text); }
+    .c-handle { font-size:.64rem; color:var(--muted); }
+    .c-more { color:var(--muted); font-size:.9rem; letter-spacing:.05em; }
+    .c-tags { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; position:relative; z-index:2; }
+    .c-tag-cat {
+      font-size:.62rem; font-weight:700; padding:3px 8px; border-radius:50px;
+      background:rgba(255,255,255,.07); color:var(--muted);
+    }
+    .c-tag-price {
+      font-size:.62rem; font-weight:800; padding:3px 8px; border-radius:50px;
+      background:rgba(255,140,0,.15); color:var(--orange2);
+    }
+    .c-title { font-size:.86rem; font-weight:800; line-height:1.45; margin-bottom:6px; position:relative; z-index:2; }
+    .c-desc { font-size:.74rem; color:var(--muted); line-height:1.55; margin-bottom:11px; position:relative; z-index:2; }
+    .c-btn {
+      width:100%; padding:9px 12px; border:none; border-radius:50px;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      color:#fff; font-size:.73rem; font-weight:800;
+      cursor:pointer; margin-bottom:10px; position:relative; z-index:2;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .c-btn:hover { transform:translateY(-1px); box-shadow:0 8px 18px rgba(255,140,0,.35); }
+    .c-stats {
+      display:flex; align-items:center; gap:11px;
+      font-size:.66rem; color:var(--muted); position:relative; z-index:2;
+    }
 
     .carousel-dots { display:flex; justify-content:center; gap:8px; margin-top:18px; }
     .carousel-dots button {
@@ -186,6 +364,9 @@
 
     /* ── SECTION COMMONS ── */
     section { padding:100px 6vw; }
+    section,
+    .carousel-section,
+    footer { scroll-margin-top:108px; }
     .section-label {
       display:inline-block; font-size:.73rem; font-weight:800; text-transform:uppercase;
       letter-spacing:.12em; color:var(--orange); margin-bottom:14px;
@@ -203,7 +384,8 @@
     .problem-inner { max-width:1100px; margin:0 auto; }
     .problem-header { text-align:center; margin-bottom:60px; }
     .problem-header .section-sub { margin:0 auto; }
-    .problem-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+    .problem-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; justify-items:center; }
+    .prob-card { width:100%; text-align:center; }
     .prob-card {
       background:var(--bg3); border:1px solid var(--border); border-radius:20px;
       padding:32px 28px; position:relative; overflow:hidden;
@@ -226,39 +408,102 @@
       display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
     }
     .solution-visual { position:relative; display:flex; justify-content:center; align-items:center; }
-    .sol-glow {
-      position:absolute; width:380px; height:380px; border-radius:50%;
-      background:radial-gradient(circle,rgba(124,77,255,.18),transparent 70%);
-      pointer-events:none;
-    }
+    /* ── NEW PHONE MOCKUP ── */
     .sol-phone {
-      width:285px; background:var(--card); border:1px solid var(--border);
+      width:300px; background:#13102a; border:1px solid var(--border);
       border-radius:40px; overflow:hidden;
       box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 60px rgba(124,77,255,.1);
-      position:relative; z-index:2;
+      position:relative; z-index:2; display:flex; flex-direction:column;
     }
-    .sol-phone-header {
-      background:var(--bg3); padding:16px 20px;
-      display:flex; align-items:center; justify-content:space-between;
+    .sp-topnav {
+      display:flex; border-bottom:1px solid rgba(255,255,255,.07);
+      padding:14px 16px 0;
     }
-    .sol-phone-logo { font-family:'Bebas Neue',sans-serif; font-size:1.1rem;
+    .sp-tab {
+      flex:1; text-align:center; font-size:.7rem; font-weight:700; color:var(--muted);
+      padding-bottom:10px; cursor:default;
+    }
+    .sp-tab-active { color:var(--orange); border-bottom:2px solid var(--orange); }
+
+    .sp-filters {
+      display:flex; gap:6px; padding:10px 12px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .sp-pill {
+      font-size:.62rem; font-weight:700; padding:4px 9px; border-radius:50px;
+      background:rgba(255,255,255,.06); color:var(--muted); cursor:default;
+    }
+    .sp-pill-active {
       background:linear-gradient(135deg,var(--orange),var(--orange2));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .sol-feed { padding:13px; display:flex; flex-direction:column; gap:10px; }
-    .sol-item {
-      background:var(--bg3); border-radius:13px; padding:13px; border:1px solid var(--border);
+      color:#fff;
     }
-    .sol-item-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:5px; }
-    .sol-item-name { font-size:.75rem; font-weight:700; color:var(--purple2); }
-    .sol-item-badge { font-size:.65rem; font-weight:700; padding:2px 8px; border-radius:50px;
-      background:rgba(255,140,0,.15); color:var(--orange2); }
-    .sol-item-text { font-size:.79rem; color:var(--text); margin-bottom:9px; line-height:1.42; }
-    .sol-item-reward { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; color:var(--orange); }
-    .sol-item-btn {
-      width:100%; margin-top:8px; padding:7px;
+
+    .sp-feed {
+      flex:1; overflow-y:auto; scrollbar-width:none;
+      display:flex; flex-direction:column;
+    }
+    .sp-feed::-webkit-scrollbar { display:none; }
+
+    .sp-card {
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .sp-card-header { display:flex; align-items:center; gap:9px; margin-bottom:8px; }
+    .sp-avatar {
+      width:34px; height:34px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.68rem; font-weight:800; color:#fff;
+    }
+    .sp-user { flex:1; display:flex; flex-direction:column; gap:1px; }
+    .sp-username { font-size:.75rem; font-weight:800; color:var(--text); }
+    .sp-handle { font-size:.62rem; color:var(--muted); }
+    .sp-more { color:var(--muted); font-size:.9rem; letter-spacing:.05em; cursor:default; }
+
+    .sp-tags { display:flex; gap:6px; margin-bottom:7px; flex-wrap:wrap; }
+    .sp-tag-cat {
+      font-size:.6rem; font-weight:700; padding:3px 8px; border-radius:50px;
+      background:rgba(255,255,255,.07); color:var(--muted);
+    }
+    .sp-tag-price {
+      font-size:.6rem; font-weight:800; padding:3px 8px; border-radius:50px;
+      background:rgba(255,140,0,.15); color:var(--orange2);
+    }
+    .sp-title {
+      font-size:.82rem; font-weight:800; line-height:1.4; color:var(--text); margin-bottom:5px;
+    }
+    .sp-desc {
+      font-size:.7rem; color:var(--muted); line-height:1.5; margin-bottom:10px;
+    }
+    .sp-btn {
+      width:100%; padding:9px; border:none; border-radius:50px; cursor:default;
       background:linear-gradient(135deg,var(--orange),var(--orange2));
-      border:none; border-radius:50px; color:#fff; font-size:.75rem; font-weight:800; cursor:pointer;
+      color:#fff; font-size:.72rem; font-weight:800;
+      margin-bottom:9px;
     }
+    .sp-stats {
+      display:flex; align-items:center; gap:12px;
+      font-size:.65rem; color:var(--muted);
+    }
+
+    .sp-bottomnav {
+      display:flex; align-items:center; justify-content:space-around;
+      padding:10px 8px 14px;
+      border-top:1px solid rgba(255,255,255,.07);
+      background:#13102a;
+    }
+    .sp-bnav-item {
+      display:flex; flex-direction:column; align-items:center; gap:2px;
+      font-size:.8rem; color:var(--muted); cursor:default; text-align:center; line-height:1.2;
+    }
+    .sp-bnav-item small { font-size:.55rem; }
+    .sp-bnav-active { color:var(--orange); }
+    .sp-bnav-plus {
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,var(--orange),var(--orange2));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.2rem; color:#fff; font-weight:700; cursor:default;
+    }
+
     .solution-list { margin-top:30px; display:flex; flex-direction:column; gap:18px; }
     .sol-feat { display:flex; gap:14px; align-items:flex-start; }
     .sol-feat-icon {
@@ -270,40 +515,248 @@
     .sol-feat-body p { color:var(--muted); font-size:.86rem; line-height:1.6; }
 
     /* ── HOW ── */
-    .how { background:var(--bg2); }
-    .how-inner { max-width:1100px; margin:0 auto; }
-    .how-header { text-align:center; margin-bottom:68px; }
+    .how { background:var(--bg2); position:relative; overflow:hidden; }
+    .how::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+    }
+    .how::after {
+      content:''; position:absolute; right:-120px; bottom:18%;
+      width:340px; height:340px; border-radius:50%;
+      background:radial-gradient(circle,rgba(124,77,255,.14),transparent 68%);
+      filter:blur(22px);
+      pointer-events:none;
+    }
+    .how-inner { max-width:1100px; margin:0 auto; position:relative; z-index:2; }
+    .how-header { text-align:center; margin-bottom:74px; }
     .how-header .section-sub { margin:0 auto; }
-    .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0; position:relative; }
-    .steps::before {
-      content:''; position:absolute; top:44px; left:10%; right:10%; height:2px;
-      background:linear-gradient(90deg,var(--orange),var(--purple)); z-index:0;
+
+    .timeline {
+      position:relative;
+      max-width:980px;
+      margin:0 auto;
+      padding:8px 0 10px;
     }
-    .step { text-align:center; padding:0 20px; position:relative; z-index:1; }
-    .step-num {
-      width:88px; height:88px; border-radius:50%; margin:0 auto 26px;
-      display:flex; align-items:center; justify-content:center;
-      font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#fff;
+    .timeline::before {
+      content:'';
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:50%;
+      width:2px;
+      transform:translateX(-50%);
+      background:linear-gradient(180deg,rgba(255,179,0,.55),rgba(124,77,255,.6),rgba(255,179,0,.45));
+      box-shadow:0 0 26px rgba(124,77,255,.22);
+    }
+    .timeline-item {
+      display:grid;
+      grid-template-columns:1fr 84px 1fr;
+      align-items:center;
+      margin-bottom:34px;
+      position:relative;
+    }
+    .timeline-side {
+      position:relative;
+      grid-row:1;
+    }
+    .timeline-side.left { padding-right:30px; text-align:right; }
+    .timeline-side.right { grid-column:3; padding-left:30px; text-align:left; }
+    .timeline-card {
+      background:rgba(35,28,69,.72);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      padding:20px 22px;
+      box-shadow:0 20px 50px rgba(0,0,0,.3);
+      position:relative;
+      backdrop-filter:blur(6px);
+    }
+    .timeline-side.left .timeline-card::after,
+    .timeline-side.right .timeline-card::after {
+      content:'';
+      position:absolute;
+      top:50%;
+      width:16px;
+      height:2px;
+      background:rgba(255,255,255,.18);
+      transform:translateY(-50%);
+    }
+    .timeline-side.left .timeline-card::after { right:-20px; }
+    .timeline-side.right .timeline-card::after { left:-20px; }
+    .tl-step {
+      font-size:.66rem;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--orange2);
+      margin-bottom:8px;
+    }
+    .tl-title { font-size:1.05rem; font-weight:800; margin-bottom:8px; line-height:1.35; }
+    .tl-desc { font-size:.9rem; line-height:1.7; color:var(--muted); }
+
+    .timeline-node {
+      grid-column:2;
+      grid-row:1;
+      width:84px;
+      height:84px;
+      border-radius:50%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto;
+      color:#fff;
       background:linear-gradient(135deg,var(--orange),var(--orange2));
+      border:1px solid rgba(255,255,255,.2);
       box-shadow:0 0 36px rgba(255,140,0,.35);
-      transition:transform .3s,box-shadow .3s;
+      position:relative;
+      z-index:3;
     }
-    .step:hover .step-num { transform:scale(1.1) rotate(-4deg); box-shadow:0 0 56px rgba(255,140,0,.55); }
-    .step-num.purple { background:linear-gradient(135deg,var(--purple),var(--purple2)); box-shadow:0 0 36px rgba(124,77,255,.35); }
-    .step:hover .step-num.purple { transform:scale(1.1) rotate(4deg); box-shadow:0 0 56px rgba(124,77,255,.55); }
-    .step h3 { font-size:1rem; font-weight:800; margin-bottom:8px; }
-    .step p { color:var(--muted); font-size:.87rem; line-height:1.65; }
-    .ai-shield {
-      margin-top:66px; background:var(--bg3); border:1px solid var(--border);
-      border-radius:22px; padding:42px; display:flex; gap:42px; align-items:center; flex-wrap:wrap;
+    .timeline-node.purple {
+      background:linear-gradient(135deg,var(--purple),var(--purple2));
+      box-shadow:0 0 36px rgba(124,77,255,.35);
     }
-    .ai-shield-icon { font-size:3.6rem; flex-shrink:0; }
-    .ai-shield h3 { font-size:1.22rem; font-weight:800; margin-bottom:8px; }
-    .ai-shield p { color:var(--muted); font-size:.92rem; line-height:1.72; max-width:580px; }
-    .ai-tags { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
-    .ai-tag {
-      font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:50px;
-      background:rgba(124,77,255,.1); border:1px solid rgba(124,77,255,.28); color:var(--purple2);
+    .timeline-node .node-icon { font-size:1.35rem; line-height:1; margin-bottom:3px; }
+    .timeline-node .node-num {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.08rem;
+      letter-spacing:.08em;
+      line-height:1;
+    }
+
+    .tl-badge {
+      position:absolute;
+      font-size:.7rem;
+      font-weight:700;
+      line-height:1;
+      color:var(--text);
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(18,14,36,.82);
+      box-shadow:0 10px 30px rgba(0,0,0,.34);
+      white-space:nowrap;
+      animation:floatTimelineBadge 5.2s ease-in-out infinite;
+    }
+    .timeline-side.left .tl-badge { right:20px; }
+    .timeline-side.right .tl-badge { left:20px; }
+    .tl-badge.top { top:-12px; }
+    .tl-badge.bottom { bottom:-12px; }
+    .tl-badge.alt {
+      color:var(--purple2);
+      border-color:rgba(179,136,255,.5);
+      background:rgba(35,28,69,.86);
+      animation-delay:.9s;
+    }
+
+    /* ── RANKING ── */
+    .ranking {
+      position:relative;
+      overflow:hidden;
+      background:var(--bg);
+    }
+    .ranking::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);
+    }
+    .ranking::after {
+      content:'';
+      position:absolute;
+      top:24%;
+      left:-140px;
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(255,140,0,.14),transparent 70%);
+      filter:blur(18px);
+      pointer-events:none;
+    }
+    .ranking-inner { max-width:1100px; margin:0 auto; position:relative; z-index:2; }
+    .ranking-header { text-align:center; margin-bottom:56px; }
+    .ranking-header .section-sub { margin:0 auto; }
+
+    .rank-features {
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin-bottom:44px;
+    }
+    .rank-feature {
+      background:rgba(35,28,69,.68);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      text-align:center;
+      padding:20px 16px;
+      transition:transform .25s,background .25s,border-color .25s;
+    }
+    .rank-feature:hover {
+      transform:translateY(-3px);
+      background:rgba(35,28,69,.86);
+      border-color:rgba(255,255,255,.16);
+    }
+    .rank-feature-icon { font-size:1.7rem; display:block; margin-bottom:10px; }
+    .rank-feature h3 { font-size:.9rem; font-weight:800; margin-bottom:6px; }
+    .rank-feature p { font-size:.78rem; color:var(--muted); line-height:1.6; }
+
+    .rank-marquee {
+      position:relative;
+      overflow:hidden;
+      padding:6px 0;
+      mask-image:linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image:linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .rank-track {
+      display:flex;
+      gap:14px;
+      width:max-content;
+      animation:rankScroll 34s linear infinite;
+    }
+    .rank-marquee:hover .rank-track { animation-play-state:paused; }
+
+    .rank-card {
+      flex-shrink:0;
+      width:258px;
+      background:rgba(35,28,69,.72);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:16px;
+      transition:transform .25s,border-color .25s,background .25s;
+    }
+    .rank-card:hover {
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(35,28,69,.9);
+    }
+    .rank-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .rank-user { font-size:.86rem; font-weight:800; }
+    .rank-pos {
+      font-size:.72rem;
+      font-weight:800;
+      color:var(--orange2);
+      background:rgba(255,179,0,.12);
+      border:1px solid rgba(255,179,0,.28);
+      border-radius:999px;
+      padding:4px 8px;
+    }
+    .rank-badge {
+      display:inline-block;
+      margin-bottom:9px;
+      font-size:.68rem;
+      font-weight:700;
+      color:var(--purple2);
+      background:rgba(124,77,255,.16);
+      border:1px solid rgba(124,77,255,.3);
+      border-radius:999px;
+      padding:4px 8px;
+    }
+    .rank-desc { font-size:.84rem; color:var(--muted); line-height:1.5; margin-bottom:8px; }
+    .rank-reward {
+      font-family:'Bebas Neue',sans-serif;
+      letter-spacing:.05em;
+      font-size:1.2rem;
+      color:var(--orange2);
     }
 
     /* ── CTA ── */
@@ -321,17 +774,11 @@
     .cta-title .hl { background:linear-gradient(135deg,var(--orange),var(--orange2));
       -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .cta-sub { color:var(--muted); font-size:1.06rem; line-height:1.76; margin-bottom:42px; }
-    .cta-form { display:flex; gap:12px; max-width:480px; margin:0 auto; flex-wrap:wrap; justify-content:center; }
-    .cta-input {
-      flex:1; min-width:210px;
-      background:var(--card); border:1.5px solid var(--border); color:var(--text);
-      font-family:'Plus Jakarta Sans',sans-serif; font-size:.94rem;
-      padding:15px 22px; border-radius:50px; outline:none; transition:border-color .2s;
-    }
-    .cta-input::placeholder { color:var(--muted); }
-    .cta-input:focus { border-color:var(--orange); }
-    .cta-trust { color:var(--muted); font-size:.8rem; margin-top:16px; }
-    .cta-trust span { color:var(--purple2); }
+    .contact-info { margin:32px 0; }
+    .contact-email-link { display:inline-block; font-size:1.4rem; font-weight:700; color:var(--orange); text-decoration:none; transition:color .2s; }
+    .contact-email-link:hover { color:#ff9500; }
+    .btn-to-top-cta { background:var(--orange); color:var(--bg); border:none; padding:14px 32px; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:12px; }
+    .btn-to-top-cta:hover { background:#ff9500; transform:translateY(-3px); box-shadow:0 12px 32px rgba(255,140,0,.4); }
 
     /* ── FOOTER ── */
     footer {
@@ -339,9 +786,12 @@
       padding:42px 6vw; display:flex; justify-content:space-between; align-items:center;
       flex-wrap:wrap; gap:18px;
     }
-    .footer-logo img { height:75px; width:auto; display:block; }
-    footer p { color:var(--muted); font-size:.82rem; }
-    .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+    .footer-logo,
+    .footer-copy,
+    .footer-links { flex:1; }
+    .footer-logo img { height:56px; width:auto; display:block; }
+    .footer-copy { color:var(--muted); font-size:.82rem; text-align:center; }
+    .footer-links { display:flex; gap:20px; flex-wrap:wrap; justify-content:flex-end; }
     .footer-links a { color:var(--muted); text-decoration:none; font-size:.82rem; transition:color .2s; }
     .footer-links a:hover { color:var(--text); }
 
@@ -350,20 +800,86 @@
     @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)}  to{opacity:1;transform:none} }
     @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:.3} }
     @keyframes wobble   { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+    @keyframes floatChip { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes floatTimelineBadge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+    @keyframes rankScroll { from{transform:translateX(0)} to{transform:translateX(calc(-50% - 7px))} }
+    @keyframes navFade { from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none} }
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:none; }
 
     /* ── RESPONSIVE ── */
     @media(max-width:900px) {
+      .hero-grid { grid-template-columns:1fr; gap:34px; }
+      .hero-copy { max-width:640px; margin:0 auto; text-align:center; }
+      .hero-sub { margin:18px auto 32px; }
+      .hero-btns { justify-content:center; }
+      .hero-chip { font-size:.74rem; }
+      .timeline::before { left:30px; transform:none; }
+      .timeline-item {
+        grid-template-columns:62px 1fr;
+        gap:16px;
+      }
+      .timeline-node {
+        grid-column:1;
+        width:62px;
+        height:62px;
+      }
+      .timeline-node .node-icon { font-size:1rem; margin-bottom:2px; }
+      .timeline-node .node-num { font-size:.9rem; }
+      .timeline-side.left,
+      .timeline-side.right {
+        grid-column:2;
+        text-align:left;
+        padding:0;
+      }
+      .timeline-side.left .timeline-card::after,
+      .timeline-side.right .timeline-card::after {
+        left:-20px;
+      }
+      .timeline-side.left .tl-badge,
+      .timeline-side.right .tl-badge {
+        left:14px;
+        right:auto;
+      }
+      .rank-features { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .solution-inner { grid-template-columns:1fr; }
       .solution-visual { order:-1; }
-      .steps::before { display:none; }
-      .steps { gap:40px; }
     }
     @media(max-width:640px) {
-      .nav-links,.nav-cta { display:none; }
-      .hamburger { display:flex; }
+      .hero { padding-top:112px; }
+      .hero-visual .sol-phone,
+      .solution-visual .sol-phone { width:258px; }
+      .carousel-section { min-height:auto; padding:72px 0 62px; }
+      .carousel-label {
+        top:18px;
+        max-width:90vw;
+        padding:8px 12px;
+        font-size:.64rem;
+        letter-spacing:.08em;
+        line-height:1.28;
+        white-space:normal;
+      }
+      .carousel-track { padding:18px 4vw 20px; }
+      .chip-1 { left:-3%; }
+      .chip-2 { right:-2%; }
+      .chip-3 { right:-4%; top:48%; }
+      .chip-4 { left:-4%; bottom:18%; }
+      .chip-5 { right:-2%; }
       .ai-shield { flex-direction:column; gap:18px; }
+      .footer-logo,
+      .footer-copy,
+      .footer-links { flex:unset; }
+      .footer-copy { width:100%; }
+      .footer-links { width:100%; justify-content:center; }
+      .rank-features { grid-template-columns:1fr; }
+      .rank-card { width:228px; }
+      .c-card { width:272px; }
+    }
+    @media(max-width:900px) {
+      .site-header { padding-top:12px; }
+      .site-nav { border-radius:16px; }
+      .nav-desktop { display:none; }
+      .hamburger { display:block; }
     }
   </style>
 </head>
@@ -375,130 +891,194 @@
 <div class="orb orb-3" id="orb3"></div>
 
 <!-- NAV -->
-<nav>
-  <span class="nav-logo"><img src="imagens/logo-sem-fundo.png" alt="DareU"></span>
-  <ul class="nav-links">
-    <li><a href="#problema">Por que isso?</a></li>
-    <li><a href="#solucao">A plataforma</a></li>
-    <li><a href="#como">Como funciona</a></li>
-  </ul>
-  <a href="#entrar" class="nav-cta">Quero topar 🔥</a>
-  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
-</nav>
+<header class="site-header" id="siteHeader">
+  <nav class="site-nav">
+    <a href="#inicio" class="nav-logo nav-link"><img src="imagens/logo-sem-fundo.png" alt="DareU"></a>
+    <div class="nav-desktop">
+      <div class="glass-nav nav-main-links">
+        <a href="#inicio" class="nav-link">Início</a>
+        <a href="#solucao" class="nav-link">O que é</a>
+        <a href="#como" class="nav-link">Como funciona</a>
+        <a href="#desafios" class="nav-link">Desafios</a>
+        <a href="#entrar" class="nav-link">App</a>
+      </div>
+      <div class="glass-nav">
+        <a href="#contato" class="nav-link">Contato</a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
 <div class="mobile-nav" id="mobileNav">
-  <a href="#problema" onclick="toggleMenu()">Por que isso?</a>
-  <a href="#solucao" onclick="toggleMenu()">A plataforma</a>
-  <a href="#como" onclick="toggleMenu()">Como funciona</a>
-  <a href="#entrar" onclick="toggleMenu()">Quero topar 🔥</a>
+  <div class="mobile-nav-inner">
+    <a href="#inicio" class="mobile-nav-link nav-link">Início</a>
+    <a href="#solucao" class="mobile-nav-link nav-link">O que é</a>
+    <a href="#como" class="mobile-nav-link nav-link">Como funciona</a>
+    <a href="#desafios" class="mobile-nav-link nav-link">Desafios</a>
+    <a href="#entrar" class="mobile-nav-link nav-link">App</a>
+    <a href="#contato" class="mobile-nav-link nav-link">Contato</a>
+  </div>
 </div>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="inicio">
   <div class="hero-content">
-    <div class="hero-badge"><span class="dot"></span> Desafios novos todo dia · Seja o próximo</div>
-    <h1 class="hero-title">
-      Desafios <span class="wob">malucos</span><br>
-      <span class="hl">dinheiro real</span>
-    </h1>
-    <p class="hero-sub">
-      Alguém paga pra você gritar no ônibus, cantar no sinaleiro<br>
-      ou pedir pizza fazendo voz de robô.<br>
-      <strong>Você topa?</strong>
-    </p>
-    <div class="hero-btns">
-      <a href="#entrar" class="btn-primary">Aceitar desafio 🤙</a>
-      <a href="#como" class="btn-secondary">Como funciona</a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-brand"><img src="imagens/logo-sem-fundo.png" alt="DareU" class="hero-brand-logo"></div>
+        
+        <h1 class="hero-title">
+          Desafie. Comprove.<br>
+          <span class="hl">Ganhe dinheiro.</span>
+        </h1>
+        <p class="hero-sub">
+          Uma plataforma onde desafios viram oportunidades reais.
+          Crie, aceite, conclua provas e suba no ranking com recompensa de verdade.
+        </p>
+        <div class="hero-btns">
+          <a href="#como" class="btn-primary">Conhecer como funciona ↓</a>
+          <a href="#entrar" class="btn-secondary">Entrar na lista</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="sol-phone">
+
+          <div class="sp-topnav">
+            <span class="sp-tab sp-tab-active">⬅ Desafios</span>
+            <span class="sp-tab">▶ Provas</span>
+          </div>
+
+          <div class="sp-filters">
+            <span class="sp-pill sp-pill-active">🔥 Em alta</span>
+            <span class="sp-pill">$ Maiores</span>
+            <span class="sp-pill">↗ Trending</span>
+          </div>
+
+          <div class="sp-feed">
+
+            <div class="sp-card">
+              <div class="sp-card-header">
+                <div class="sp-avatar" style="background:#e67e22">LS</div>
+                <div class="sp-user">
+                  <span class="sp-username">Lucas Silva</span>
+                  <span class="sp-handle">@lucassilva · 2h</span>
+                </div>
+                <span class="sp-more">···</span>
+              </div>
+              <div class="sp-tags">
+                <span class="sp-tag-cat">🫣 Vergonha Alheia</span>
+                <span class="sp-tag-price">$ R$ 150</span>
+              </div>
+              <div class="sp-title">Gritar "EU SOU O MELHOR" no meio do shopping</div>
+              <div class="sp-desc">Tem que ser no shopping lotado, no meio da praça de alimentação. Filmar tudo e postar a reação das pessoas.</div>
+              <button class="sp-btn">⚡ Aceitar Desafio — R$ 150</button>
+              <div class="sp-stats">
+                <span>🤍 1342</span>
+                <span>💬 289</span>
+                <span>🏆 12</span>
+                <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+              </div>
+            </div>
+
+            <div class="sp-card">
+              <div class="sp-card-header">
+                <div class="sp-avatar" style="background:#8e44ad">AC</div>
+                <div class="sp-user">
+                  <span class="sp-username">Ana Costa</span>
+                  <span class="sp-handle">@anacosta · 4h</span>
+                </div>
+                <span class="sp-more">···</span>
+              </div>
+              <div class="sp-tags">
+                <span class="sp-tag-cat">😅 Constrangedor</span>
+                <span class="sp-tag-price">$ R$ 200</span>
+              </div>
+              <div class="sp-title">Pedir o numero de 10 desconhecidos na rua</div>
+              <div class="sp-desc">Deve ser gravado, sem edição. Cada abordagem conta. Não pode ser alguém que você conheça.</div>
+              <button class="sp-btn">⚡ Aceitar Desafio — R$ 200</button>
+              <div class="sp-stats">
+                <span>🤍 2521</span>
+                <span>💬 534</span>
+                <span>🏆 8</span>
+                <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+              </div>
+            </div>
+
+            <div class="sp-card">
+              <div class="sp-card-header">
+                <div class="sp-avatar" style="background:#27ae60">PS</div>
+                <div class="sp-user">
+                  <span class="sp-username">Pedro Santos</span>
+                  <span class="sp-handle">@pedrosantos · 6h</span>
+                </div>
+                <span class="sp-more">···</span>
+              </div>
+              <div class="sp-tags">
+                <span class="sp-tag-cat">💪 Coragem</span>
+                <span class="sp-tag-price">$ R$ 100</span>
+              </div>
+              <div class="sp-title">Cantar no karaoke de um bar cheio sem saber a letra</div>
+              <div class="sp-desc">Escolha uma música que você não conheça e cante até o final, sem interrupções.</div>
+              <button class="sp-btn">⚡ Aceitar Desafio — R$ 100</button>
+              <div class="sp-stats">
+                <span>🤍 987</span>
+                <span>💬 143</span>
+                <span>🏆 5</span>
+                <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="sp-bottomnav">
+            <span class="sp-bnav-item sp-bnav-active">🏠<br><small>Feed</small></span>
+            <span class="sp-bnav-item">🔍<br><small>Explorar</small></span>
+            <span class="sp-bnav-plus">＋</span>
+            <span class="sp-bnav-item">🔔<br><small>Alertas</small></span>
+            <span class="sp-bnav-item">👤<br><small>Perfil</small></span>
+          </div>
+        </div>
+        <div class="hero-chip chip-1">🏆 Ranking</div>
+        <div class="hero-chip chip-2">💰 Recompensa</div>
+        <div class="hero-chip chip-3">⭐ Destaque</div>
+        <div class="hero-chip chip-4">🏅 Badge desbloqueado</div>
+        <div class="hero-chip chip-5">✅ Desafio concluído</div>
+      </div>
     </div>
   </div>
 </section>
-
-<!-- CARROSSEL -->
-<div class="carousel-section">
-  <div class="carousel-label">🔥 Desafios abertos agora mesmo</div>
-  <div class="carousel-outer">
-    <div class="carousel-track" id="carouselTrack">
-      <div class="c-card">
-        <span class="c-emoji">🚌</span>
-        <div class="c-cat">Desafio social</div>
-        <div class="c-title">Grite "EU AMO SEGUNDA-FEIRA!" no ônibus lotado</div>
-        <div class="c-bottom"><div class="c-reward">R$ 60</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card purple">
-        <span class="c-emoji">🎵</span>
-        <div class="c-cat">Desafio musical</div>
-        <div class="c-title">Cante o hino nacional no sinaleiro em voz de ópera</div>
-        <div class="c-bottom"><div class="c-reward">R$ 90</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card">
-        <span class="c-emoji">🍕</span>
-        <div class="c-cat">Desafio criativo</div>
-        <div class="c-title">Peça uma pizza pelo telefone fazendo voz de robô até o final</div>
-        <div class="c-bottom"><div class="c-reward">R$ 45</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card purple">
-        <span class="c-emoji">🛒</span>
-        <div class="c-cat">Desafio público</div>
-        <div class="c-title">Ande de costas por 2 corredores inteiros do supermercado</div>
-        <div class="c-bottom"><div class="c-reward">R$ 70</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card">
-        <span class="c-emoji">☎️</span>
-        <div class="c-cat">Desafio áudio</div>
-        <div class="c-title">Ligue pro seu chefe falando só em rimas durante 1 minuto</div>
-        <div class="c-bottom"><div class="c-reward">R$ 120</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card purple">
-        <span class="c-emoji">🧃</span>
-        <div class="c-cat">Desafio físico</div>
-        <div class="c-title">Beba um copo cheio de limão sem fazer nenhuma careta</div>
-        <div class="c-bottom"><div class="c-reward">R$ 55</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card">
-        <span class="c-emoji">💃</span>
-        <div class="c-cat">Desafio dança</div>
-        <div class="c-title">Dance no elevador e cumprimente quem entrar como se nada</div>
-        <div class="c-bottom"><div class="c-reward">R$ 80</div><button class="c-btn">Topar!</button></div>
-      </div>
-      <div class="c-card purple">
-        <span class="c-emoji">🎤</span>
-        <div class="c-cat">Desafio coragem</div>
-        <div class="c-title">Peça um autógrafo pra um estranho como se ele fosse famoso</div>
-        <div class="c-bottom"><div class="c-reward">R$ 40</div><button class="c-btn">Topar!</button></div>
-      </div>
-    </div>
-  </div>
-  <div class="carousel-dots" id="carouselDots"></div>
-</div>
 
 <!-- PROBLEMA -->
 <section class="problem" id="problema">
   <div class="problem-inner">
     <div class="problem-header reveal">
       <div class="section-label">O problema</div>
-      <br>
-      <h2 class="section-title">Diversão e grana<br>nunca conversaram</h2>
-      <p class="section-sub">Você já fez coisa ridícula de graça por causa de uma aposta. E se você tivesse cobrado? O DareU existe pra isso.</p>
+      <h2 class="section-title">Entretenimento e recompensa<br>agora no mesmo lugar</h2>
+      <p class="section-sub">Muitas dinâmicas sociais acontecem sem retorno financeiro. O DareU transforma participação em recompensa validada.</p>
     </div>
     <div class="problem-grid">
       <div class="prob-card reveal">
         <span class="prob-icon">🤷</span>
         <h3>Apostas sem recompensa real</h3>
-        <p>Você já perdeu (ou ganhou) uma aposta idiota de bar que não valeu nada. Aqui vale dinheiro de verdade, depositado antes de você começar.</p>
+        <p>Muitas apostas sociais não geram retorno real. Aqui a recompensa é financeira e fica reservada antes do início.</p>
       </div>
       <div class="prob-card reveal" style="transition-delay:.1s">
         <span class="prob-icon">🔒</span>
         <h3>Sem garantia de pagamento</h3>
-        <p>Você cumpre o desafio, grava tudo — e depois o cara some. O escrow do DareU bloqueia o valor antes mesmo de você aceitar.</p>
+        <p>Em muitos casos, quem conclui a tarefa não recebe. No DareU, o valor é bloqueado em escrow antes da aceitação.</p>
       </div>
       <div class="prob-card reveal" style="transition-delay:.2s">
         <span class="prob-icon">🚫</span>
-        <h3>Desafios perigosos por aí</h3>
-        <p>A internet é cheia de trends que machucam. Nossa IA barra na entrada qualquer desafio ilegal, perigoso ou fora do limite.</p>
+        <h3>Desafios sem controle de risco</h3>
+        <p>Conteúdos sem moderação podem gerar risco real. Nossa análise automática de desafios bloqueia conteúdos ilegais, perigosos ou fora das diretrizes, com confirmação humana nas situações críticas.</p>
       </div>
       <div class="prob-card reveal" style="transition-delay:.3s">
-        <span class="prob-icon">🤖</span>
-        <h3>Vídeos falsos são problema real</h3>
-        <p>Com IA gerando vídeos realistas, qualquer um pode forjar uma prova. Nossa detecção de deepfake garante que só vale o que é genuíno.</p>
+        <span class="prob-icon">📱</span>
+        <h3>Falta de rede social específica para desafios</h3>
+        <p>Hoje, os desafios ficam espalhados em plataformas genéricas. Falta um espaço dedicado para criar, participar, acompanhar progresso e receber recompensa no mesmo fluxo.</p>
       </div>
     </div>
   </div>
@@ -510,75 +1090,145 @@
     <div class="solution-text reveal">
       <div class="section-label">A plataforma</div>
       <h2 class="section-title">Sua rede social<br>de desafios pagos</h2>
-      <p class="section-sub">DareU funciona como um feed social — mas cada post tem um prêmio. Você posta, alguém topa, grava a prova, recebe. Fim.</p>
+      <p class="section-sub">DareU funciona como um feed social, com recompensa vinculada a cada desafio. Você publica, outro usuário participa, envia a comprovação e recebe após validação.</p>
       <div class="solution-list">
         <div class="sol-feat">
           <div class="sol-feat-icon">💸</div>
           <div class="sol-feat-body">
-            <h4>Grana bloqueada antes de começar</h4>
-            <p>O valor vai pro escrow no momento do post. Sem calote, sem drama — o dinheiro já tá esperando por você.</p>
+            <h4>Recompensa bloqueada antes do início</h4>
+            <p>O valor é alocado em escrow no momento da publicação. A transferência ocorre somente após a validação da entrega.</p>
           </div>
         </div>
         <div class="sol-feat">
           <div class="sol-feat-icon">🧠</div>
           <div class="sol-feat-body">
-            <h4>IA filtra o que é perigoso</h4>
-            <p>Cada desafio é analisado antes de ir ao ar. Conteúdo ilegal, +18 ou arriscado é bloqueado na hora, automaticamente.</p>
+            <h4>Análise automática de desafios</h4>
+            <p>Cada desafio passa por análise automática antes de ir ao ar. Conteúdo ilegal, +18 ou arriscado é bloqueado na hora.</p>
           </div>
         </div>
         <div class="sol-feat">
           <div class="sol-feat-icon">👁️</div>
           <div class="sol-feat-body">
-            <h4>Detector de deepfake no envio</h4>
-            <p>A IA visual analisa cada vídeo submetido e barra provas geradas artificialmente. Só conta o que é real.</p>
+            <h4>Análise automática de vídeos no envio</h4>
+            <p>A análise automática de vídeos avalia cada envio e barra provas artificiais. Só conta o que é real.</p>
           </div>
         </div>
         <div class="sol-feat">
           <div class="sol-feat-icon">📲</div>
           <div class="sol-feat-body">
             <h4>Feed, curtida e ranking</h4>
-            <p>Siga pessoas, curta os desafios mais épicos e suba no ranking dos mais corajosos da plataforma.</p>
+            <p>Siga outros participantes, interaja com os desafios em destaque e evolua no ranking da plataforma.</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="solution-visual reveal" style="transition-delay:.2s">
+       <div class="solution-visual reveal" style="transition-delay:.2s">
       <div class="sol-glow"></div>
       <div class="sol-phone">
-        <div class="sol-phone-header">
-          <span class="sol-phone-logo">DareU</span>
-          <span style="color:var(--muted);font-size:.72rem">🔔 5</span>
+
+        <!-- top nav -->
+        <div class="sp-topnav">
+          <span class="sp-tab sp-tab-active">⬅ Desafios</span>
+          <span class="sp-tab">▶ Provas</span>
         </div>
-        <div class="sol-feed">
-          <div class="sol-item">
-            <div class="sol-item-top">
-              <span class="sol-item-name">@pedrao_br</span>
-              <span class="sol-item-badge">Aberto</span>
-            </div>
-            <div class="sol-item-text">🚌 Grite "eu amo segunda!" no ônibus cheio</div>
-            <div class="sol-item-reward">R$ 60,00</div>
-            <button class="sol-item-btn">Topar Desafio!</button>
-          </div>
-          <div class="sol-item" style="border-color:rgba(124,77,255,.32)">
-            <div class="sol-item-top">
-              <span class="sol-item-name">@mc_carol99</span>
-              <span class="sol-item-badge" style="background:rgba(124,77,255,.15);color:var(--purple2)">Novo</span>
-            </div>
-            <div class="sol-item-text">🎵 Cante no sinaleiro em voz de ópera</div>
-            <div class="sol-item-reward">R$ 90,00</div>
-            <button class="sol-item-btn" style="background:linear-gradient(135deg,var(--purple),var(--purple2))">Topar Desafio!</button>
-          </div>
-          <div class="sol-item">
-            <div class="sol-item-top">
-              <span class="sol-item-name">@zé_maluco</span>
-              <span class="sol-item-badge">Aberto</span>
-            </div>
-            <div class="sol-item-text">🛒 Ande de costas no supermercado inteiro</div>
-            <div class="sol-item-reward">R$ 70,00</div>
-            <button class="sol-item-btn">Topar Desafio!</button>
-          </div>
+
+        <!-- filter pills -->
+        <div class="sp-filters">
+          <span class="sp-pill sp-pill-active">🔥 Em alta</span>
+          <span class="sp-pill">$ Maiores</span>
+          <span class="sp-pill">↗ Trending</span>
         </div>
-      </div>
+
+        <!-- feed -->
+        <div class="sp-feed">
+
+          <!-- card 1 -->
+          <div class="sp-card">
+            <div class="sp-card-header">
+              <div class="sp-avatar" style="background:#e67e22">LS</div>
+              <div class="sp-user">
+                <span class="sp-username">Lucas Silva</span>
+                <span class="sp-handle">@lucassilva · 2h</span>
+              </div>
+              <span class="sp-more">···</span>
+            </div>
+            <div class="sp-tags">
+              <span class="sp-tag-cat">🫣 Vergonha Alheia</span>
+              <span class="sp-tag-price">$ R$ 150</span>
+            </div>
+            <div class="sp-title">Gritar "EU SOU O MELHOR" no meio do shopping</div>
+            <div class="sp-desc">Tem que ser no shopping lotado, no meio da praça de alimentação. Filmar tudo e postar a reação das pessoas.</div>
+            <button class="sp-btn">⚡ Aceitar Desafio — R$ 150</button>
+            <div class="sp-stats">
+              <span>🤍 1342</span>
+              <span>💬 289</span>
+              <span>🏆 12</span>
+              <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+            </div>
+          </div>
+
+          <!-- card 2 -->
+          <div class="sp-card">
+            <div class="sp-card-header">
+              <div class="sp-avatar" style="background:#8e44ad">AC</div>
+              <div class="sp-user">
+                <span class="sp-username">Ana Costa</span>
+                <span class="sp-handle">@anacosta · 4h</span>
+              </div>
+              <span class="sp-more">···</span>
+            </div>
+            <div class="sp-tags">
+              <span class="sp-tag-cat">😅 Constrangedor</span>
+              <span class="sp-tag-price">$ R$ 200</span>
+            </div>
+            <div class="sp-title">Pedir o número de 10 desconhecidos na rua</div>
+            <div class="sp-desc">Tem que ser gravado, sem edição. Cada abordagem conta. Não pode ser gente que você conhece! 😂</div>
+            <button class="sp-btn">⚡ Aceitar Desafio — R$ 200</button>
+            <div class="sp-stats">
+              <span>🤍 2521</span>
+              <span>💬 534</span>
+              <span>🏆 8</span>
+              <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+            </div>
+          </div>
+
+          <!-- card 3 -->
+          <div class="sp-card">
+            <div class="sp-card-header">
+              <div class="sp-avatar" style="background:#27ae60">PS</div>
+              <div class="sp-user">
+                <span class="sp-username">Pedro Santos</span>
+                <span class="sp-handle">@pedrosantos · 6h</span>
+              </div>
+              <span class="sp-more">···</span>
+            </div>
+            <div class="sp-tags">
+              <span class="sp-tag-cat">💪 Coragem</span>
+              <span class="sp-tag-price">$ R$ 100</span>
+            </div>
+            <div class="sp-title">Cantar no karaokê de um bar cheio sem saber a letra</div>
+            <div class="sp-desc">Escolha uma música que você NÃO conhece e cante até o final. Sem parar, sem desistir. 🎤</div>
+            <button class="sp-btn">⚡ Aceitar Desafio — R$ 100</button>
+            <div class="sp-stats">
+              <span>🤍 987</span>
+              <span>💬 143</span>
+              <span>🏆 5</span>
+              <span style="margin-left:auto">🔖 &nbsp; ↗</span>
+            </div>
+          </div>
+
+        </div><!-- /feed -->
+
+        <!-- bottom nav -->
+        <div class="sp-bottomnav">
+          <span class="sp-bnav-item sp-bnav-active">🏠<br><small>Feed</small></span>
+          <span class="sp-bnav-item">🔍<br><small>Explorar</small></span>
+          <span class="sp-bnav-plus">＋</span>
+          <span class="sp-bnav-item">🔔<br><small>Alertas</small></span>
+          <span class="sp-bnav-item">👤<br><small>Perfil</small></span>
+        </div>
+
+      </div><!-- /sol-phone -->
     </div>
   </div>
 </section>
@@ -588,76 +1238,329 @@
   <div class="how-inner">
     <div class="how-header reveal">
       <div class="section-label">Passo a passo</div>
-      <br>
-      <h2 class="section-title">Do desafio à grana<br>em 4 passos</h2>
-      <p class="section-sub">Sem burocracia, sem contrato, sem enrolação. Só coragem e uma câmera boa.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">01</div>
-        <h3>Crie sua conta</h3>
-        <p>Cadastro gratuito em segundos. Já cai direto no feed de desafios.</p>
-      </div>
-      <div class="step reveal" style="transition-delay:.1s">
-        <div class="step-num purple">02</div>
-        <h3>Poste ou aceite</h3>
-        <p>Crie um desafio maluco com o prêmio que quiser, ou tope um que apareceu no seu feed.</p>
-      </div>
-      <div class="step reveal" style="transition-delay:.2s">
-        <div class="step-num">03</div>
-        <h3>Grave e envie a prova</h3>
-        <p>Fez o desafio? Grava o vídeo, envia. A IA verifica se é autêntico em segundos.</p>
-      </div>
-      <div class="step reveal" style="transition-delay:.3s">
-        <div class="step-num purple">04</div>
-        <h3>Receba o prêmio 💰</h3>
-        <p>O criador aprova, o escrow libera e o dinheiro cai na sua conta. Ponto final.</p>
-      </div>
+      <h2 class="section-title">Como funciona<br>do início ao prêmio</h2>
+      <p class="section-sub">Do desafio à recompensa: cada etapa é protegida antes da liberação final.</p>
     </div>
 
-    <div class="ai-shield reveal">
-      <div class="ai-shield-icon">🛡️</div>
-      <div>
-        <h3>A diversão tem limites — e a IA garante</h3>
-        <p>Dois sistemas de IA trabalham em paralelo: um analisa o texto do desafio para barrar conteúdo perigoso, ilegal ou +18 antes de publicar; o outro verifica cada vídeo enviado para detectar deepfakes e provas falsas. Você foca no desafio, a gente cuida do resto.</p>
-        <div class="ai-tags">
-          <span class="ai-tag">🤖 IA de texto</span>
-          <span class="ai-tag">👁️ IA visual</span>
-          <span class="ai-tag">🚫 Anti-deepfake</span>
-          <span class="ai-tag">⚠️ Filtro +18</span>
-          <span class="ai-tag">🔒 Anti-ilegal</span>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-side left">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 01</div>
+            <h3 class="tl-title">Criação do desafio</h3>
+            <p class="tl-desc">Um usuário cria um desafio e define a recompensa em dinheiro. O valor fica bloqueado na plataforma até o fim da validação.</p>
+          </article>
+          <span class="tl-badge top">Escrow ativo</span>
         </div>
+        <div class="timeline-node"><span class="node-icon">🎯</span><span class="node-num">01</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.08s">
+        <div class="timeline-side right">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 02</div>
+            <h3 class="tl-title">Análise automática de conteúdo</h3>
+            <p class="tl-desc">O desafio passa por análise automática antes da publicação, garantindo segurança e conformidade da proposta.</p>
+          </article>
+          <span class="tl-badge alt bottom">Análise automática</span>
+        </div>
+        <div class="timeline-node purple"><span class="node-icon">🛡️</span><span class="node-num">02</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.16s">
+        <div class="timeline-side left">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 03</div>
+            <h3 class="tl-title">Aceitação e envio</h3>
+            <p class="tl-desc">Outro usuário encontra o desafio, aceita e envia um vídeo cumprindo a proposta dentro do prazo estabelecido.</p>
+          </article>
+          <span class="tl-badge bottom">Envio registrado</span>
+        </div>
+        <div class="timeline-node"><span class="node-icon">🎬</span><span class="node-num">03</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.24s">
+        <div class="timeline-side right">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 04</div>
+            <h3 class="tl-title">Verificação visual do vídeo</h3>
+            <p class="tl-desc">O vídeo enviado passa por análise visual automática para verificar integridade e conformidade com as regras.</p>
+          </article>
+          <span class="tl-badge alt top">Análise automática de vídeos</span>
+        </div>
+        <div class="timeline-node purple"><span class="node-icon">🔍</span><span class="node-num">04</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.32s">
+        <div class="timeline-side left">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 05</div>
+            <h3 class="tl-title">Validação administrativa</h3>
+            <p class="tl-desc">Se o vídeo passar pelos filtros automáticos, segue para validação administrativa antes da liberação final.</p>
+          </article>
+          <span class="tl-badge top">Checklist humano</span>
+        </div>
+        <div class="timeline-node"><span class="node-icon">✅</span><span class="node-num">05</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.4s">
+        <div class="timeline-side right">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 06</div>
+            <h3 class="tl-title">Recompensa liberada</h3>
+            <p class="tl-desc">Após a validação completa, a recompensa é liberada ao participante. Nenhum valor é transferido antes disso.</p>
+          </article>
+          <span class="tl-badge alt bottom">Pagamento seguro</span>
+        </div>
+        <div class="timeline-node purple"><span class="node-icon">💰</span><span class="node-num">06</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.48s">
+        <div class="timeline-side left">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 07</div>
+            <h3 class="tl-title">Evolução no ranking</h3>
+            <p class="tl-desc">Quem conclui o desafio sobe no ranking da plataforma, ganhando visibilidade e destaque no feed.</p>
+          </article>
+          <span class="tl-badge bottom">+ Pontos</span>
+        </div>
+        <div class="timeline-node"><span class="node-icon">📈</span><span class="node-num">07</span></div>
+      </div>
+
+      <div class="timeline-item reveal" style="transition-delay:.56s">
+        <div class="timeline-side right">
+          <article class="timeline-card">
+            <div class="tl-step">Etapa 08</div>
+            <h3 class="tl-title">Badges e progressão</h3>
+            <p class="tl-desc">O sistema libera badges e progressão competitiva, reconhecendo conquistas e incentivando novos desafios.</p>
+          </article>
+          <span class="tl-badge alt top">Badge desbloqueado</span>
+        </div>
+        <div class="timeline-node purple"><span class="node-icon">🏅</span><span class="node-num">08</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CARROSSEL -->
+<div class="carousel-section" id="desafios">
+  <div class="carousel-label">🔥 Desafios abertos agora mesmo</div>
+  <div class="carousel-outer">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#e67e22">LS</div>
+          <div class="c-user">
+            <span class="c-username">Lucas Silva</span>
+            <span class="c-handle">@lucassilva · 2h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">🫣 Vergonha Alheia</span>
+          <span class="c-tag-price">$ R$ 150</span>
+        </div>
+        <div class="c-title">Gritar "EU SOU O MELHOR" no meio do shopping</div>
+        <div class="c-desc">Tem que ser no shopping lotado, no meio da praça de alimentação. Filmar tudo e postar a reação das pessoas.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 150</button>
+        <div class="c-stats"><span>🤍 1342</span><span>💬 289</span><span>🏆 12</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#8e44ad">AC</div>
+          <div class="c-user">
+            <span class="c-username">Ana Costa</span>
+            <span class="c-handle">@anacosta · 4h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">😅 Constrangedor</span>
+          <span class="c-tag-price">$ R$ 200</span>
+        </div>
+        <div class="c-title">Pedir o número de 10 desconhecidos na rua</div>
+        <div class="c-desc">Deve ser gravado, sem edição. Cada abordagem conta. Não pode ser alguém que você conheça.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 200</button>
+        <div class="c-stats"><span>🤍 2521</span><span>💬 534</span><span>🏆 8</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#27ae60">PS</div>
+          <div class="c-user">
+            <span class="c-username">Pedro Santos</span>
+            <span class="c-handle">@pedrosantos · 6h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">💪 Coragem</span>
+          <span class="c-tag-price">$ R$ 100</span>
+        </div>
+        <div class="c-title">Cantar no karaokê de um bar cheio sem saber a letra</div>
+        <div class="c-desc">Escolha uma música que você não conheça e cante até o final, sem interrupções.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 100</button>
+        <div class="c-stats"><span>🤍 987</span><span>💬 143</span><span>🏆 5</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#2980b9">RM</div>
+          <div class="c-user">
+            <span class="c-username">Rafa Mendes</span>
+            <span class="c-handle">@rafamendes · 1h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">🎤 Coragem</span>
+          <span class="c-tag-price">$ R$ 80</span>
+        </div>
+        <div class="c-title">Pedir um autógrafo para um desconhecido como se fosse famoso</div>
+        <div class="c-desc">Abordagem precisa ser educada e gravada de forma contínua, sem cortes.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 80</button>
+        <div class="c-stats"><span>🤍 1165</span><span>💬 201</span><span>🏆 9</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#c0392b">TB</div>
+          <div class="c-user">
+            <span class="c-username">Taina Braga</span>
+            <span class="c-handle">@tainabraga · 3h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">🧠 Criativo</span>
+          <span class="c-tag-price">$ R$ 95</span>
+        </div>
+        <div class="c-title">Contar uma história improvisada para 3 pessoas na praça</div>
+        <div class="c-desc">A história deve ter começo, meio e fim, com duração mínima de 2 minutos.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 95</button>
+        <div class="c-stats"><span>🤍 879</span><span>💬 121</span><span>🏆 4</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#16a085">GK</div>
+          <div class="c-user">
+            <span class="c-username">Gabi Klein</span>
+            <span class="c-handle">@gabiklein · 5h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">🏃 Desempenho</span>
+          <span class="c-tag-price">$ R$ 120</span>
+        </div>
+        <div class="c-title">Subir 15 andares de escada e registrar o tempo final</div>
+        <div class="c-desc">Vídeo contínuo do início ao fim mostrando o cronômetro e a chegada.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 120</button>
+        <div class="c-stats"><span>🤍 1440</span><span>💬 198</span><span>🏆 11</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#d35400">NF</div>
+          <div class="c-user">
+            <span class="c-username">Nina Freitas</span>
+            <span class="c-handle">@ninafreitas · 7h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">🎬 Performance</span>
+          <span class="c-tag-price">$ R$ 70</span>
+        </div>
+        <div class="c-title">Fazer uma cena de filme em local público por 1 minuto</div>
+        <div class="c-desc">A interpretação deve ter fala audível e enquadramento estável durante toda a prova.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 70</button>
+        <div class="c-stats"><span>🤍 761</span><span>💬 88</span><span>🏆 3</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+      <div class="c-card">
+        <div class="c-card-header">
+          <div class="c-avatar" style="background:#7f8c8d">VT</div>
+          <div class="c-user">
+            <span class="c-username">Vitor Telles</span>
+            <span class="c-handle">@vitortelles · 9h</span>
+          </div>
+          <span class="c-more">···</span>
+        </div>
+        <div class="c-tags">
+          <span class="c-tag-cat">📚 Foco</span>
+          <span class="c-tag-price">$ R$ 60</span>
+        </div>
+        <div class="c-title">Estudar por 90 minutos sem celular no alcance da mesa</div>
+        <div class="c-desc">Time-lapse permitido, desde que mostre o ambiente e o tempo total completo.</div>
+        <button class="c-btn">⚡ Aceitar Desafio — R$ 60</button>
+        <div class="c-stats"><span>🤍 690</span><span>💬 74</span><span>🏆 2</span><span style="margin-left:auto">🔖 &nbsp; ↗</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</div>
+
+<!-- RANKING -->
+<section class="ranking" id="ranking">
+  <div class="ranking-inner">
+    <div class="ranking-header reveal">
+      <div class="section-label">Competição</div>
+      <h2 class="section-title">Ranking e<br>gamificação</h2>
+      <p class="section-sub">Cada desafio concluído fortalece sua posição. Badges, progressão e visibilidade dentro da comunidade.</p>
+    </div>
+
+    <div class="rank-features reveal" style="transition-delay:.08s">
+      <article class="rank-feature"><span class="rank-feature-icon">🏆</span><h3>Ranking ativo</h3><p>Sua posição muda a cada desafio concluído.</p></article>
+      <article class="rank-feature"><span class="rank-feature-icon">🏅</span><h3>Badges exclusivos</h3><p>Reconhecimento por conquistas e consistência.</p></article>
+      <article class="rank-feature"><span class="rank-feature-icon">📊</span><h3>Progressão visível</h3><p>Acompanhe sua evolução dentro da plataforma.</p></article>
+      <article class="rank-feature"><span class="rank-feature-icon">👁️</span><h3>Visibilidade</h3><p>Os melhores ganham destaque no feed e no ranking.</p></article>
+    </div>
+
+    <div class="rank-marquee reveal" style="transition-delay:.16s">
+      <div class="rank-track">
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@lucas.rvs</span><span class="rank-pos">#3</span></div><span class="rank-badge">Explorador</span><p class="rank-desc">Caminhar 10km em 24h</p><div class="rank-reward">R$ 85,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@marina.dst</span><span class="rank-pos">#7</span></div><span class="rank-badge">Competidora</span><p class="rank-desc">Cozinhar sem receita</p><div class="rank-reward">R$ 120,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@phelipe.rn</span><span class="rank-pos">#1</span></div><span class="rank-badge">Veterano</span><p class="rank-desc">30 dias sem redes sociais</p><div class="rank-reward">R$ 250,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@carol.braga</span><span class="rank-pos">#14</span></div><span class="rank-badge">Iniciante</span><p class="rank-desc">Falar em público por 5 min</p><div class="rank-reward">R$ 60,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@thiago.mx</span><span class="rank-pos">#5</span></div><span class="rank-badge">Destemido</span><p class="rank-desc">Acampar sozinho 1 noite</p><div class="rank-reward">R$ 180,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@bruna.alves</span><span class="rank-pos">#2</span></div><span class="rank-badge">Estrategista</span><p class="rank-desc">Resolver cubo mágico vendado</p><div class="rank-reward">R$ 200,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@diego.costa</span><span class="rank-pos">#9</span></div><span class="rank-badge">Persistente</span><p class="rank-desc">100 flexões em 10 min</p><div class="rank-reward">R$ 95,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@juliana.vm</span><span class="rank-pos">#11</span></div><span class="rank-badge">Criativa</span><p class="rank-desc">Pintar um quadro em 1h</p><div class="rank-reward">R$ 70,00</div></article>
+
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@lucas.rvs</span><span class="rank-pos">#3</span></div><span class="rank-badge">Explorador</span><p class="rank-desc">Caminhar 10km em 24h</p><div class="rank-reward">R$ 85,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@marina.dst</span><span class="rank-pos">#7</span></div><span class="rank-badge">Competidora</span><p class="rank-desc">Cozinhar sem receita</p><div class="rank-reward">R$ 120,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@phelipe.rn</span><span class="rank-pos">#1</span></div><span class="rank-badge">Veterano</span><p class="rank-desc">30 dias sem redes sociais</p><div class="rank-reward">R$ 250,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@carol.braga</span><span class="rank-pos">#14</span></div><span class="rank-badge">Iniciante</span><p class="rank-desc">Falar em público por 5 min</p><div class="rank-reward">R$ 60,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@thiago.mx</span><span class="rank-pos">#5</span></div><span class="rank-badge">Destemido</span><p class="rank-desc">Acampar sozinho 1 noite</p><div class="rank-reward">R$ 180,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@bruna.alves</span><span class="rank-pos">#2</span></div><span class="rank-badge">Estrategista</span><p class="rank-desc">Resolver cubo mágico vendado</p><div class="rank-reward">R$ 200,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@diego.costa</span><span class="rank-pos">#9</span></div><span class="rank-badge">Persistente</span><p class="rank-desc">100 flexões em 10 min</p><div class="rank-reward">R$ 95,00</div></article>
+        <article class="rank-card"><div class="rank-top"><span class="rank-user">@juliana.vm</span><span class="rank-pos">#11</span></div><span class="rank-badge">Criativa</span><p class="rank-desc">Pintar um quadro em 1h</p><div class="rank-reward">R$ 70,00</div></article>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- CTA / ACESSO ANTECIPADO -->
 <section class="cta-section" id="entrar">
   <div class="cta-inner reveal">
     <div class="section-label">Acesso antecipado</div>
-    <br>
     <h2 class="cta-title">
-      Você <span class="hl">topa</span><br>
-      o desafio?
+      Está interessado na<br>
+      <span class="hl">DareU?</span>
     </h2>
-    <p class="cta-sub">Entre na lista de espera e seja um dos primeiros a usar o DareU. Os early adopters ganham benefícios exclusivos no lançamento.</p>
-    <div class="cta-form">
-      <input type="email" class="cta-input" placeholder="seu@email.com" />
-      <a href="#" class="btn-primary" style="white-space:nowrap">Eu topo! 🤙</a>
+    <p class="cta-sub">Contate a gente para saber mais!</p>
+    <div class="contact-info">
+      <a href="mailto:equipe.dareu@gmail.com" class="contact-email-link">equipe.dareu@gmail.com</a>
     </div>
-    <p class="cta-trust">✅ Grátis para entrar. <span>Zero spam, sai quando quiser.</span></p>
+    <button class="btn-to-top-cta" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Voltar ao topo</button>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer id="contato">
   <span class="footer-logo"><img src="imagens/logo-sem-fundo.png" alt="DareU"></span>
-  <p>© 2026 DareU. Todos os direitos reservados.</p>
+  <p class="footer-copy">© 2026 DareU. Todos os direitos reservados.</p>
   <div class="footer-links">
     <a href="#">Termos de uso</a>
     <a href="#">Privacidade</a>
-    <a href="https://wa.me/5545998101887" target="_blank" rel="noopener noreferrer">Contato</a>
+    <a href="#">Contato</a>
   </div>
 </footer>
 
@@ -706,80 +1609,129 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 /* ══ MOBILE NAV ══ */
+const siteHeader = document.getElementById('siteHeader');
+const mobileNav = document.getElementById('mobileNav');
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+window.addEventListener('scroll', () => {
+  siteHeader.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
 function toggleMenu() {
-  document.getElementById('mobileNav').classList.toggle('open');
+  const willOpen = !mobileNav.classList.contains('open');
+  mobileNav.classList.toggle('open', willOpen);
+  hamburgerBtn.classList.toggle('open', willOpen);
+  hamburgerBtn.setAttribute('aria-expanded', String(willOpen));
+  document.body.classList.toggle('menu-open', willOpen);
 }
+
+document.querySelectorAll('.nav-link').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth' });
+    if (mobileNav.classList.contains('open')) toggleMenu();
+  });
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 900 && mobileNav.classList.contains('open')) {
+    toggleMenu();
+  }
+});
 
 /* ══ CAROUSEL ══ */
 (function () {
   const track = document.getElementById('carouselTrack');
   const dotsEl = document.getElementById('carouselDots');
-  const CARD_W = 240 + 18; // card + gap
-  let isDragging = false, startX = 0, scrollStart = 0, currentDot = 0;
+  const CARD_W = 300 + 18; // card + gap
+  let isDragging = false, startX = 0, scrollStart = 0;
+  let isPaused = false;
+  let lastTs = 0;
+  let pauseTimeout = null;
+  const SCROLL_SPEED = 42; // px/s
+  const originalCards = Array.from(track.querySelectorAll('.c-card'));
+  const totalCards = originalCards.length;
 
-  // How many cards visible at once
-  function visibleCount() {
-    return Math.max(1, Math.floor((window.innerWidth * 0.88) / CARD_W));
+  if (!totalCards) return;
+
+  // Dots are not needed for continuous marquee behavior.
+  if (dotsEl) dotsEl.style.display = 'none';
+
+  // Duplicate cards before and after the original list to make a seamless loop.
+  for (let i = totalCards - 1; i >= 0; i--) {
+    track.insertBefore(originalCards[i].cloneNode(true), track.firstChild);
   }
+  originalCards.forEach((card) => {
+    track.appendChild(card.cloneNode(true));
+  });
 
-  const totalCards = track.querySelectorAll('.c-card').length;
+  const LOOP_W = CARD_W * totalCards;
+  track.scrollLeft = LOOP_W;
 
-  function buildDots() {
-    dotsEl.innerHTML = '';
-    const vc    = visibleCount();
-    const count = Math.ceil(totalCards / vc);
-    for (let i = 0; i < count; i++) {
-      const btn = document.createElement('button');
-      if (i === currentDot) btn.classList.add('active');
-      btn.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(btn);
+  function wrapScroll() {
+    if (track.scrollLeft <= 0) {
+      track.scrollLeft += LOOP_W;
+    } else if (track.scrollLeft >= LOOP_W * 2) {
+      track.scrollLeft -= LOOP_W;
     }
   }
 
-  function goTo(i) {
-    const vc     = visibleCount();
-    const count  = Math.ceil(totalCards / vc);
-    currentDot   = Math.max(0, Math.min(i, count - 1));
-    track.scrollTo({ left: currentDot * vc * CARD_W, behavior: 'smooth' });
-    dotsEl.querySelectorAll('button').forEach((b, idx) => b.classList.toggle('active', idx === currentDot));
+  function resumeSoon(delay = 1400) {
+    clearTimeout(pauseTimeout);
+    pauseTimeout = setTimeout(() => { isPaused = false; }, delay);
   }
 
-  buildDots();
-  window.addEventListener('resize', buildDots);
+  function step(ts) {
+    if (!lastTs) lastTs = ts;
+    const dt = (ts - lastTs) / 1000;
+    lastTs = ts;
 
-  // Update active dot on natural scroll
-  track.addEventListener('scroll', () => {
-    const vc    = visibleCount();
-    const count = Math.ceil(totalCards / vc);
-    const idx   = Math.round(track.scrollLeft / (vc * CARD_W));
-    if (idx !== currentDot && idx < count) {
-      currentDot = idx;
-      dotsEl.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === idx));
+    if (!isPaused && !isDragging) {
+      track.scrollLeft += SCROLL_SPEED * dt;
+      wrapScroll();
     }
-  }, { passive: true });
+
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 
   // Mouse drag
   track.addEventListener('mousedown', (e) => {
+    isPaused = true;
     isDragging = true; startX = e.clientX; scrollStart = track.scrollLeft;
     track.classList.add('grabbing');
   });
-  window.addEventListener('mouseup', () => { isDragging = false; track.classList.remove('grabbing'); });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    track.classList.remove('grabbing');
+    resumeSoon();
+  });
   window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     e.preventDefault();
     track.scrollLeft = scrollStart - (e.clientX - startX);
+    wrapScroll();
   });
 
   // Touch swipe
-  track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; scrollStart = track.scrollLeft; }, { passive: true });
-  track.addEventListener('touchmove',  (e) => { track.scrollLeft = scrollStart - (e.touches[0].clientX - startX); }, { passive: true });
+  track.addEventListener('touchstart', (e) => {
+    isPaused = true;
+    startX = e.touches[0].clientX;
+    scrollStart = track.scrollLeft;
+  }, { passive: true });
+  track.addEventListener('touchmove',  (e) => {
+    track.scrollLeft = scrollStart - (e.touches[0].clientX - startX);
+    wrapScroll();
+  }, { passive: true });
+  track.addEventListener('touchend', () => resumeSoon(), { passive: true });
 
-  // Auto-advance every 3.5 s, pauses on hover
-  let timer = setInterval(() => goTo((currentDot + 1) % Math.ceil(totalCards / visibleCount())), 3500);
-  track.addEventListener('mouseenter', () => clearInterval(timer));
-  track.addEventListener('mouseleave', () => {
-    timer = setInterval(() => goTo((currentDot + 1) % Math.ceil(totalCards / visibleCount())), 3500);
-  });
+  // Pause while hovering, resume on leave.
+  track.addEventListener('mouseenter', () => { isPaused = true; clearTimeout(pauseTimeout); });
+  track.addEventListener('mouseleave', () => { isPaused = false; clearTimeout(pauseTimeout); });
 })();
 </script>
 </body>
